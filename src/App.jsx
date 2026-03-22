@@ -54,14 +54,14 @@ function App() {
               <div className="absolute left-0 top-0 bottom-0 w-1 bg-green-800 scale-y-0 group-hover:scale-y-100 transition-transform duration-500 origin-bottom"></div>
               
               {project.video ? (
-                <div className="w-full h-48 sm:w-48 sm:h-32 group-hover:h-64 group-hover:sm:w-80 group-hover:sm:h-48 flex-shrink-0 rounded-lg overflow-hidden bg-stone-100 relative shadow-sm group-hover:shadow-md transition-all duration-500 ease-out">
+                <div className="w-full h-48 sm:w-48 sm:h-32 group-hover:h-64 group-hover:sm:w-80 group-hover:sm:h-48 flex-shrink-0 rounded-lg overflow-hidden bg-stone-200/50 flex justify-center items-center relative shadow-sm group-hover:shadow-md transition-all duration-500 ease-out">
                   <video 
                     src={project.video}
                     autoPlay
                     loop
                     muted
                     playsInline
-                    className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    className={`w-full h-full group-hover:scale-105 transition-transform duration-700 ${project.videoClass || 'object-cover'}`}
                   />
                 </div>
               ) : (
