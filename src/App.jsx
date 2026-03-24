@@ -1,12 +1,28 @@
-import React from 'react';
+import { useEffect } from 'react';
 import { useScrollReveal } from './hooks/useScrollReveal';
 import { personalInfo, projects, skills } from './config/data';
 
 function App() {
   useScrollReveal();
 
+  useEffect(() => {
+    const handleScroll = () => {
+      const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+      const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+      const scrolled = (winScroll / height) * 100;
+      const progressElement = document.getElementById("scroll-progress");
+      if (progressElement) {
+        progressElement.style.width = scrolled + "%";
+      }
+    };
+
+    window.addEventListener("scroll", handleScroll);
+    return () => window.removeEventListener("scroll", handleScroll);
+  }, []);
+
   return (
     <div className="min-h-screen bg-stone-50 text-warm-gray font-sans selection:bg-green-800 selection:text-white">
+      <div id="scroll-progress"></div>
       {/* Navigation */}
       <nav className="fixed top-0 w-full z-50 bg-stone-50/80 backdrop-blur-md border-b border-stone-200/50">
         <div className="max-w-[900px] mx-auto px-6 h-20 flex items-center justify-between">
@@ -45,16 +61,28 @@ function App() {
           <a href="#contacto" className="inline-flex items-center justify-center bg-dark text-white px-8 py-4 rounded-full hover:bg-green-800 transition-colors duration-300">
             Hablemos de tu proyecto
           </a>
-          <a 
-            href={personalInfo.cvUrl} 
-            download 
-            className="inline-flex items-center justify-center border border-stone-200 text-dark px-8 py-4 rounded-full hover:bg-stone-100 transition-colors duration-300 gap-2"
-          >
-            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M7.5 12L12 16.5m0 0L16.5 12M12 16.5V3" />
-            </svg>
-            Descargar CV
-          </a>
+          <div className="flex flex-wrap gap-3">
+            <a 
+              href={personalInfo.cvUrlEs} 
+              download 
+              className="inline-flex items-center justify-center border border-stone-200 text-dark px-6 py-4 rounded-full hover:bg-stone-100 hover:scale-105 active:scale-95 transition-all duration-300 gap-2 text-sm md:text-base"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M7.5 12L12 16.5m0 0L16.5 12M12 16.5V3" />
+              </svg>
+              CV (ES)
+            </a>
+            <a 
+              href={personalInfo.cvUrlEn} 
+              download 
+              className="inline-flex items-center justify-center border border-stone-200 text-dark px-6 py-4 rounded-full hover:bg-stone-100 hover:scale-105 active:scale-95 transition-all duration-300 gap-2 text-sm md:text-base"
+            >
+              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M7.5 12L12 16.5m0 0L16.5 12M12 16.5V3" />
+              </svg>
+              CV (EN)
+            </a>
+          </div>
         </div>
       </section>
 
@@ -66,7 +94,7 @@ function App() {
             <a 
               key={index}
               href={project.link} 
-              className="reveal block group bg-white p-8 rounded-xl relative overflow-hidden flex flex-col sm:flex-row gap-6 items-start sm:items-center shadow-sm hover:shadow-md transition-shadow duration-500"
+              className="reveal block group bg-white p-8 rounded-xl relative overflow-hidden flex flex-col sm:flex-row gap-6 items-start sm:items-center shadow-sm hover:shadow-md hover-lift transition-all duration-500"
               style={{ transitionDelay: `${index * 80}ms` }}
             >
               {/* Animated Left Border */}

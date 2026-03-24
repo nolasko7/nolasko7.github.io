@@ -10,7 +10,8 @@ export const personalInfo = {
   github: "https://github.com/nolasko7", 
   linkedin: "https://www.linkedin.com/in/valentin-nolasco-987249374/", 
   whatsapp: "https://wa.me/5492657359495",
-  cvUrl: "/cv.pdf" 
+  cvUrlEs: "/CV ESP.pdf",
+  cvUrlEn: "/CV EN.pdf" 
 };
 
 export const projects = [
