@@ -4,20 +4,21 @@ import almacenVideo from '../assets/Mi Almacen.mp4';
 
 export const personalInfo = {
   name: "Valentin",
-  role: "Desarrollador Web",
+  role: "Full Stack Developer · Web & Mobile · Automatizacion",
   description: "Desarrollador enfocado en crear experiencias interactivas y escalables.",
-  email: "tuemail@ejemplo.com", // Cambiar por tu correo
-  github: "https://github.com/tu-usuario", // Cambiar por tu GitHub
-  linkedin: "https://linkedin.com/in/tu-usuario", // Cambiar por tu LinkedIn
-  whatsapp: "https://wa.me/numerodewi" // Cambiar por tu número de WhatsApp
+  email: "valentin.nolasco123123@gmail.com", 
+  github: "https://github.com/nolasko7", 
+  linkedin: "https://www.linkedin.com/in/valentin-nolasco-987249374/", 
+  whatsapp: "https://wa.me/5492657359495",
+  cvUrl: "/cv.pdf" 
 };
 
 export const projects = [
   {
     title: "Sistema de Reservas de Cancha",
     video: courtixVideo,
-    type: "Web",
-    description: "Plataforma integral orientada a la gestión eficiente de reservas deportivas y administración de instalaciones.",
+    type: "Web app en producción",
+    description: "Plataforma integral de gestión deportiva. Digitaliza reservas y pagos de canchas, optimizando la administración de complejos deportivos reales.",
     problemSolved: "Digitaliza y agiliza el negocio automatizando reservas y pagos, minimizando la sobrecarga de comunicaciones a través de un dashboard de control centralizado.",
     tags: ["Node.js", "Express", "PostgreSQL", "React"],
     link: "#",
@@ -25,8 +26,8 @@ export const projects = [
   {
     title: "Gestión de Turnos con Chatbot",
     video: peluqueriaVideo,
-    type: "Web + Bot",
-    description: "Asistente virtual impulsado por IA diseñado para la atención y agendamiento interactivo y autónomo de clientes.",
+    type: "Web + Bot (IA) en producción",
+    description: "Desarrollé un sistema de turnos con bot de WhatsApp que está en producción y lo usa una peluquería real. Maneja reservas automáticamente sin intervención humana.",
     problemSolved: "Optimiza exponencialmente el tiempo del peluquero al delegar la interacción en el bot, asegurando que los turnos estén siempre perfectamente organizados en la agenda de forma automática.",
     tags: ["Next.js", "Node.js", "WhatsApp API", "PostgreSQL", "Docker", "Cloudflare"],
     link: "#",
@@ -35,8 +36,8 @@ export const projects = [
     title: "App de Gestión de Stock",
     video: almacenVideo,
     videoClass: "object-contain",
-    type: "Mobile",
-    description: "Solución móvil avanzada para el control integral de inventarios mediante sistema de escaneo incorporado utilizando la cámara del dispositivo.",
+    type: "Mobile app en producción",
+    description: "Aplicación móvil para control de inventario utilizada en comercios reales. Implementa escaneo con cámara para sincronizar stock físico con bases de datos en tiempo real.",
     problemSolved: "Agiliza el flujo de ventas e impide quiebres de stock sincronizando la lectura física de productos en el almacén directamente con la base de datos central.",
     tags: ["Dart", "Flutter", "MySQL"],
     link: "#",
@@ -44,10 +45,10 @@ export const projects = [
 ];
 
 export const skills = [
-  { name: "React / Next.js", subtitle: "Frontend & SSR" },
-  { name: "Node.js / Express", subtitle: "Backend APIs" },
-  { name: "React Native", subtitle: "Mobile Development" },
+  { name: "React / Next.js / Tailwind CSS", subtitle: "Frontend" },
+  { name: "Node.js / Express / REST APIs / WebSockets", subtitle: "Backend APIs" },
+  { name: "Flutter / Dart", subtitle: "Mobile Development" },
   { name: "PostgreSQL / SQL", subtitle: "Database" },
-  { name: "Docker / DevOps", subtitle: "Deployment" },
+  { name: "Docker / Cloudflare / DevOps", subtitle: "Deployment" },
   { name: "WhatsApp API / Bots", subtitle: "Automation" }
 ];

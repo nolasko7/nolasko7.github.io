@@ -22,19 +22,38 @@ function App() {
 
       {/* Hero Section */}
       <section className="pt-40 pb-20 px-6 max-w-[900px] mx-auto min-h-[80vh] flex flex-col justify-center reveal">
-        <div className="flex items-center gap-4 mb-8">
-          <div className="w-12 h-[1px] bg-green-800"></div>
-          <span className="uppercase tracking-widest text-xs text-green-800 font-medium">{personalInfo.role}</span>
+        <div className="flex flex-wrap items-center gap-4 mb-8">
+          <div className="flex items-center gap-4">
+            <div className="w-12 h-[1px] bg-green-800"></div>
+            <span className="uppercase tracking-widest text-xs text-green-800 font-medium">{personalInfo.role}</span>
+          </div>
+          <a href="#contacto" className="flex items-center gap-2 px-3 py-1 bg-green-50 border border-green-200 rounded-full hover:bg-green-100 transition-colors group">
+            <span className="relative flex h-2 w-2">
+              <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
+              <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
+            </span>
+            <span className="text-[10px] uppercase tracking-wider text-green-800 font-semibold">Disponible para posiciones part-time o fulltime flexible</span>
+          </a>
         </div>
         <h1 className="text-5xl md:text-7xl font-serif text-dark leading-tight mb-8 max-w-2xl">
-          Construyendo productos digitales con <span className="italic text-green-800">propósito</span> y buen diseño.
+          Del problema real al <span className="italic text-green-800">producto en producción</span>.
         </h1>
         <p className="text-xl md:text-2xl font-light mb-12 max-w-xl leading-relaxed">
           {personalInfo.description}
         </p>
-        <div>
+        <div className="flex flex-col sm:flex-row gap-4">
           <a href="#contacto" className="inline-flex items-center justify-center bg-dark text-white px-8 py-4 rounded-full hover:bg-green-800 transition-colors duration-300">
             Hablemos de tu proyecto
+          </a>
+          <a 
+            href={personalInfo.cvUrl} 
+            download 
+            className="inline-flex items-center justify-center border border-stone-200 text-dark px-8 py-4 rounded-full hover:bg-stone-100 transition-colors duration-300 gap-2"
+          >
+            <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M7.5 12L12 16.5m0 0L16.5 12M12 16.5V3" />
+            </svg>
+            Descargar CV
           </a>
         </div>
       </section>
@@ -54,7 +73,7 @@ function App() {
               <div className="absolute left-0 top-0 bottom-0 w-1 bg-green-800 scale-y-0 group-hover:scale-y-100 transition-transform duration-500 origin-bottom"></div>
               
               {project.video ? (
-                <div className="w-full h-48 sm:w-48 sm:h-32 group-hover:h-64 group-hover:sm:w-80 group-hover:sm:h-48 flex-shrink-0 rounded-lg overflow-hidden bg-stone-200/50 flex justify-center items-center relative shadow-sm group-hover:shadow-md transition-all duration-500 ease-out">
+                <div className="w-full h-56 sm:w-64 sm:h-40 group-hover:sm:w-80 group-hover:sm:h-48 flex-shrink-0 rounded-lg overflow-hidden bg-stone-200/50 flex justify-center items-center relative shadow-sm group-hover:shadow-md transition-all duration-500 ease-out">
                   <video 
                     src={project.video}
                     autoPlay
@@ -132,22 +151,25 @@ function App() {
       {/* Sobre Mí Section */}
       <section id="sobre-mi" className="py-24 px-6 max-w-[900px] mx-auto reveal">
         <h2 className="text-3xl font-serif text-dark mb-16">Sobre Mí</h2>
-        <div className="grid md:grid-cols-2 gap-16 items-center">
-          <div>
-            <p className="font-light leading-relaxed mb-6">
-              Soy un desarrollador apasionado por crear interfaces limpias y experiencias de usuario excepcionales. Creo firmemente que un buen diseño debe estar respaldado por una base técnica sólida y código mantenible.
+        <div className="grid md:grid-cols-2 gap-16 items-start">
+          <div className="space-y-6">
+            <p className="font-light leading-relaxed">
+              Soy desarrollador Full Stack de Villa Mercedes, Argentina. Me especializo en construir productos que resuelven problemas reales: sistemas de turnos, automatizaciones con WhatsApp y aplicaciones móviles que la gente usa todos los días.
             </p>
             <p className="font-light leading-relaxed">
-              Trabajo con tecnologías modernas tanto en frontend como en el backend, permitiéndome tener una visión completa del producto y afrontar desafíos desde la concepción hasta el despliegue.
+              Todos mis proyectos están en producción y los usan clientes reales. Eso me enseñó más que cualquier curso — a tomar decisiones bajo presión, a priorizar lo que funciona y a iterar rápido cuando algo falla.
+            </p>
+            <p className="font-light leading-relaxed italic text-green-800">
+              Actualmente profundizando en DevOps, infraestructura con Docker y MLOps. Disponible para proyectos freelance y posiciones remotas.
             </p>
           </div>
           <div className="grid grid-cols-2 gap-8 border-l border-stone-200 pl-8 md:pl-16">
             <div>
-              <span className="block text-4xl font-serif text-green-800 mb-2">4+</span>
+              <span className="block text-4xl font-serif text-green-800 mb-2">3+</span>
               <span className="text-sm font-light uppercase tracking-widest text-warm-gray">Años de Exp.</span>
             </div>
             <div>
-              <span className="block text-4xl font-serif text-green-800 mb-2">15+</span>
+              <span className="block text-4xl font-serif text-green-800 mb-2">10+</span>
               <span className="text-sm font-light uppercase tracking-widest text-warm-gray">Proyectos</span>
             </div>
           </div>
