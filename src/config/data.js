@@ -30,7 +30,7 @@ export const projects = [
     type: "Web + Bot (IA) en producción",
     description: "Desarrollé un sistema de turnos con bot de WhatsApp que está en producción y lo usa una peluquería real. Maneja reservas automáticamente sin intervención humana.",
     problemSolved: "Optimiza exponencialmente el tiempo del peluquero al delegar la interacción en el bot, asegurando que los turnos estén siempre perfectamente organizados en la agenda de forma automática.",
-    tags: ["Next.js", "Node.js", "WhatsApp API", "PostgreSQL", "Docker", "Cloudflare"],
+    tags: ["Next.js", "Node.js", "WhatsApp API", "PostgreSQL", "Docker", "Cloudflare", "Github Actions", "MySQL"],
     link: "#",
   },
   {
@@ -40,7 +40,7 @@ export const projects = [
     type: "Mobile app en producción",
     description: "Aplicación móvil para control de inventario utilizada en comercios reales. Implementa escaneo con cámara para sincronizar stock físico con bases de datos en tiempo real.",
     problemSolved: "Agiliza el flujo de ventas e impide quiebres de stock sincronizando la lectura física de productos en el almacén directamente con la base de datos central.",
-    tags: ["Dart", "Flutter", "MySQL"],
+    tags: ["Dart", "Flutter", "MySQL", "Android Studio"],
     link: "#",
   }
 ];
@@ -48,8 +48,8 @@ export const projects = [
 export const skills = [
   { name: "React / Next.js / Tailwind CSS", subtitle: "Frontend" },
   { name: "Node.js / Express / REST APIs / WebSockets", subtitle: "Backend APIs" },
-  { name: "Flutter / Dart", subtitle: "Mobile Development" },
+  { name: "Flutter / Dart / Android Studio", subtitle: "Mobile Development" },
   { name: "PostgreSQL / SQL", subtitle: "Database" },
-  { name: "Docker / Cloudflare / DevOps", subtitle: "Deployment" },
-  { name: "WhatsApp API / Bots", subtitle: "Automation" }
+  { name: "Docker / Cloudflare / Github Actions", subtitle: "Deployment" },
+  { name: "WhatsApp API / LLM", subtitle: "Automation" }
 ];
