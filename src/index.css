@@ -110,3 +110,21 @@ body::before {
   transform: translateY(-8px) scale(1.01);
   box-shadow: 0 20px 40px rgba(0,0,0,0.08) !important;
 }
+
+/* Custom Cursor global style */
+.cursor-none-global, .cursor-none-global * {
+  cursor: none !important;
+}
+
+/* Marquee Animation */
+@keyframes marquee {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+.animate-marquee {
+  animation: marquee 40s linear infinite;
+}
+.animate-marquee:hover {
+  animation-play-state: paused;
+}

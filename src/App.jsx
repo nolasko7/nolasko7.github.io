@@ -1,6 +1,10 @@
 import { useEffect } from 'react';
 import { useScrollReveal } from './hooks/useScrollReveal';
 import { personalInfo, projects, skills } from './config/data';
+import CustomCursor from './components/CustomCursor';
+import AnimatedCounter from './components/AnimatedCounter';
+import TechMarquee from './components/TechMarquee';
+import Preloader from './components/Preloader';
 
 function App() {
   useScrollReveal();
@@ -22,6 +26,8 @@ function App() {
 
   return (
     <div className="min-h-screen bg-stone-50 text-warm-gray font-sans selection:bg-green-800 selection:text-white">
+      <Preloader />
+      <CustomCursor />
       <div id="scroll-progress"></div>
       {/* Navigation */}
       <nav className="fixed top-0 w-full z-50 bg-stone-50/80 backdrop-blur-md border-b border-stone-200/50">
@@ -85,6 +91,9 @@ function App() {
           </div>
         </div>
       </section>
+
+      {/* Tech Marquee */}
+      <TechMarquee />
 
       {/* Proyectos Section */}
       <section id="proyectos" className="py-12 sm:py-24 px-6 max-w-[900px] mx-auto">
@@ -193,11 +202,15 @@ function App() {
           </div>
           <div className="grid grid-cols-2 gap-8 border-l border-stone-200 pl-8 md:pl-16">
             <div>
-              <span className="block text-4xl font-serif text-green-800 mb-2">3+</span>
+              <span className="block text-4xl font-serif text-green-800 mb-2">
+                <AnimatedCounter end={3} suffix="+" duration={2000} />
+              </span>
               <span className="text-sm font-light uppercase tracking-widest text-warm-gray">Años de Exp.</span>
             </div>
             <div>
-              <span className="block text-4xl font-serif text-green-800 mb-2">10+</span>
+              <span className="block text-4xl font-serif text-green-800 mb-2">
+                <AnimatedCounter end={10} suffix="+" duration={2500} />
+              </span>
               <span className="text-sm font-light uppercase tracking-widest text-warm-gray">Proyectos</span>
             </div>
           </div>
