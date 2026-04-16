@@ -1,19 +1,24 @@
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 import { useScrollReveal } from './hooks/useScrollReveal';
 import { personalInfo, projects, skills } from './config/data';
 import CustomCursor from './components/CustomCursor';
 import AnimatedCounter from './components/AnimatedCounter';
 import TechMarquee from './components/TechMarquee';
 import Preloader from './components/Preloader';
+import SpotlightCard from './components/SpotlightCard';
 
 function App() {
   useScrollReveal();
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     const handleScroll = () => {
       const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
       const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
       const scrolled = (winScroll / height) * 100;
+      
+      setIsScrolled(winScroll > 20);
+
       const progressElement = document.getElementById("scroll-progress");
       if (progressElement) {
         progressElement.style.width = scrolled + "%";
@@ -25,19 +30,24 @@ function App() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-stone-50 text-warm-gray font-sans selection:bg-green-800 selection:text-white">
+    <div className="min-h-screen bg-stone-50 text-warm-gray font-sans selection:bg-green-800 selection:text-white relative z-0">
+      {/* Decorative Background Elements */}
+      <div className="bg-grid"></div>
+      <div className="glow-orb glow-orb-1"></div>
+      <div className="glow-orb glow-orb-2"></div>
+
       <Preloader />
       <CustomCursor />
       <div id="scroll-progress"></div>
       {/* Navigation */}
-      <nav className="fixed top-0 w-full z-50 bg-stone-50/80 backdrop-blur-md border-b border-stone-200/50">
-        <div className="max-w-[900px] mx-auto px-6 h-20 flex items-center justify-between">
+      <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled ? 'bg-stone-50/80 backdrop-blur-md border-b border-stone-200/50 py-2' : 'bg-transparent py-4'}`}>
+        <div className="max-w-[900px] mx-auto px-6 flex items-center justify-between">
           <span className="font-serif text-xl text-dark tracking-tight">{personalInfo.name}</span>
-          <div className="flex sm:flex gap-4 sm:gap-8 text-[10px] sm:text-sm uppercase tracking-widest overflow-x-auto no-scrollbar whitespace-nowrap py-4 sm:py-0">
-            <a href="#proyectos" className="hover:text-dark transition-colors">Proyectos</a>
-            <a href="#skills" className="hover:text-dark transition-colors">Skills</a>
-            <a href="#sobre-mi" className="hover:text-dark transition-colors">Sobre Mí</a>
-            <a href="#contacto" className="hover:text-dark transition-colors">Contacto</a>
+          <div className="flex items-center gap-2 sm:gap-6 text-[10px] sm:text-xs font-medium uppercase tracking-widest overflow-x-auto no-scrollbar whitespace-nowrap">
+            <a href="#proyectos" className="px-3 py-2 rounded-full hover:bg-stone-200/50 hover:text-green-800 transition-colors">Proyectos</a>
+            <a href="#skills" className="px-3 py-2 rounded-full hover:bg-stone-200/50 hover:text-green-800 transition-colors">Skills</a>
+            <a href="#sobre-mi" className="px-3 py-2 rounded-full hover:bg-stone-200/50 hover:text-green-800 transition-colors">Sobre Mí</a>
+            <a href="#contacto" className="px-3 py-2 rounded-full hover:bg-stone-200/50 hover:text-green-800 transition-colors">Contacto</a>
           </div>
         </div>
       </nav>
@@ -100,10 +110,12 @@ function App() {
         <h2 className="text-3xl font-serif text-dark mb-16 reveal">Proyectos Destacados</h2>
         <div className="flex flex-col gap-8">
           {projects.map((project, index) => (
-            <a
+            <SpotlightCard
               key={index}
+              as="a"
               href={project.link}
-              className="reveal block group bg-white p-8 rounded-xl relative overflow-hidden flex flex-col sm:flex-row gap-6 items-start sm:items-center shadow-sm hover:shadow-md hover-lift transition-all duration-500"
+              className="reveal block group bg-white rounded-xl shadow-sm hover:shadow-md hover-lift transition-all duration-500"
+              innerClassName="p-8 flex flex-col sm:flex-row gap-6 items-start sm:items-center w-full h-full"
               style={{ transitionDelay: `${index * 80}ms` }}
             >
               {/* Animated Left Border */}
@@ -154,13 +166,7 @@ function App() {
                   </div>
                 )}
               </div>
-
-              <div className="sm:ml-auto text-warm-gray group-hover:text-green-800 group-hover:-translate-x-1 transition-all mt-4 sm:mt-0 flex-shrink-0">
-                <svg className="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
-                  <path strokeLinecap="round" strokeLinejoin="round" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" />
-                </svg>
-              </div>
-            </a>
+            </SpotlightCard>
           ))}
         </div>
       </section>
@@ -169,19 +175,45 @@ function App() {
       <section id="skills" className="py-12 sm:py-24 px-6 max-w-[900px] mx-auto">
         <h2 className="text-3xl font-serif text-dark mb-16 reveal">Habilidades Técnicas</h2>
         <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 sm:gap-6">
-          {skills.map((skill, index) => (
-            <div
-              key={index}
-              className="reveal bg-white p-6 rounded-xl border border-stone-100 flex items-start gap-4"
-              style={{ transitionDelay: `${index * 80}ms` }}
-            >
-              <div className="w-2 h-2 rounded-full bg-green-800 mt-2 flex-shrink-0"></div>
-              <div>
-                <h4 className="text-dark font-medium mb-1">{skill.name}</h4>
-                <p className="text-sm font-light text-warm-gray">{skill.subtitle}</p>
-              </div>
-            </div>
-          ))}
+          {skills.map((skill, index) => {
+            let icon;
+            switch (skill.subtitle) {
+              case 'Frontend':
+                icon = <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9.75 17L9 20l-1 1h8l-1-1-.75-3M3 13h18M5 17h14a2 2 0 002-2V5a2 2 0 00-2-2H5a2 2 0 00-2 2v10a2 2 0 002 2z" /></svg>;
+                break;
+              case 'Backend APIs':
+                icon = <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M5 12h14M5 12a2 2 0 01-2-2V6a2 2 0 012-2h14a2 2 0 012 2v4a2 2 0 01-2 2M5 12a2 2 0 00-2 2v4a2 2 0 002 2h14a2 2 0 002-2v-4a2 2 0 00-2-2m-2-4h.01M17 16h.01" /></svg>;
+                break;
+              case 'Mobile Development':
+                icon = <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M10.5 1.5H8.25A2.25 2.25 0 006 3.75v16.5a2.25 2.25 0 002.25 2.25h7.5A2.25 2.25 0 0018 20.25V3.75a2.25 2.25 0 00-2.25-2.25H13.5m-3 0V3h3V1.5m-3 0h3m-3 18.75h3" /></svg>;
+                break;
+              case 'Database':
+                icon = <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M20.25 6.375c0 2.278-3.694 4.125-8.25 4.125S3.75 8.653 3.75 6.375m16.5 0c0-2.278-3.694-4.125-8.25-4.125S3.75 4.097 3.75 6.375m16.5 0v11.25c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125V6.375m16.5 0v3.75m-16.5-3.75v3.75m16.5 0v3.75C20.25 16.153 16.556 18 12 18s-8.25-1.847-8.25-4.125v-3.75m16.5 0c0 2.278-3.694 4.125-8.25 4.125s-8.25-1.847-8.25-4.125" /></svg>;
+                break;
+              case 'Deployment':
+                icon = <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M12 16.5V9.75m0 0l3 3m-3-3l-3 3M6.75 19.5a4.5 4.5 0 01-1.41-8.775 5.25 5.25 0 0110.233-2.33 3 3 0 013.758 3.848A3.752 3.752 0 0118 19.5H6.75z" /></svg>;
+                break;
+              default:
+                icon = <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9.813 15.904L9 18.75l-.813-2.846a4.5 4.5 0 00-3.09-3.09L2.25 12l2.846-.813a4.5 4.5 0 003.09-3.09L9 5.25l.813 2.846a4.5 4.5 0 003.09 3.09L15.75 12l-2.846.813a4.5 4.5 0 00-3.09 3.09zM18.259 8.715L18 9.75l-.259-1.035a3.375 3.375 0 00-2.455-2.456L14.25 6l1.036-.259a3.375 3.375 0 002.455-2.456L18 2.25l.259 1.035a3.375 3.375 0 002.456 2.456L21.75 6l-1.035.259a3.375 3.375 0 00-2.456 2.456z" /></svg>;
+            }
+
+            return (
+              <SpotlightCard
+                key={index}
+                className="reveal bg-white rounded-xl border border-stone-100 hover:border-stone-200 transition-all duration-500"
+                innerClassName="p-6 flex flex-col h-full"
+                style={{ transitionDelay: `${index * 80}ms` }}
+              >
+                <div className="w-12 h-12 rounded-lg bg-stone-50 flex items-center justify-center text-green-800 border border-stone-100 mb-6">
+                  {icon}
+                </div>
+                <div className="mt-auto">
+                  <span className="text-[10px] sm:text-xs uppercase tracking-widest text-warm-gray mb-2 block">{skill.subtitle}</span>
+                  <h4 className="text-dark font-medium text-[15px] leading-relaxed">{skill.name.split(' / ').join(' • ')}</h4>
+                </div>
+              </SpotlightCard>
+            );
+          })}
         </div>
       </section>
 
@@ -197,7 +229,7 @@ function App() {
               Algunos de mis proyectos están en producción y los usan clientes reales. Eso me enseñó más que cualquier curso — a tomar decisiones bajo presión, a priorizar lo que funciona y a iterar rápido cuando algo falla.
             </p>
             <p className="font-light leading-relaxed italic text-green-800">
-              Actualmente profundizando en DevOps, infraestructura con Docker y MLOps. Disponible para proyectos freelance y posiciones remotas.
+              Disponible para proyectos freelance y posiciones remotas.
             </p>
           </div>
           <div className="grid grid-cols-2 gap-8 border-l border-stone-200 pl-8 md:pl-16">

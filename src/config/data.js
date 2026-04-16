@@ -5,7 +5,7 @@ import almacenVideo from '../assets/Mi Almacen.mp4';
 export const personalInfo = {
   name: "Valentin",
   role: "Full Stack Developer · Web & Mobile · Automatizacion",
-  description: "Desarrollador enfocado en crear experiencias interactivas y escalables.",
+  description: "Full Stack de Villa Mercedes, Argentina. Tres proyectos en producción usados por clientes reales — desde bots de WhatsApp hasta apps móviles de gestión de stock.",
   email: "valentin.nolasco123123@gmail.com", 
   github: "https://github.com/nolasko7", 
   linkedin: "https://www.linkedin.com/in/valentin-nolasco-987249374/", 

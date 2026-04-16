@@ -8,10 +8,7 @@ const technologies = [
 
 const TechMarquee = () => {
   return (
-    <div className="relative w-full overflow-hidden border-y border-stone-200/50 bg-stone-50 py-6 sm:py-8 flex">
-      {/* Gradients for smooth edges */}
-      <div className="absolute inset-y-0 left-0 w-16 sm:w-32 bg-gradient-to-r from-stone-50 to-transparent z-10 pointer-events-none"></div>
-      <div className="absolute inset-y-0 right-0 w-16 sm:w-32 bg-gradient-to-l from-stone-50 to-transparent z-10 pointer-events-none"></div>
+    <div className="relative w-full overflow-hidden border-y border-stone-200/50 py-6 sm:py-8 flex" style={{ maskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)', WebkitMaskImage: 'linear-gradient(to right, transparent, black 15%, black 85%, transparent)' }}>
       
       <div className="flex w-max animate-marquee">
         {[...Array(2)].map((_, i) => (
