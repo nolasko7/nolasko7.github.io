@@ -1,6 +1,7 @@
 import React, { useRef, useState } from 'react';
 
-const SpotlightCard = ({ children, className = '', innerClassName = '', style = {}, as: Component = 'div', ...props }) => {
+const SpotlightCard = ({ children, className = '', innerClassName = '', style = {}, as = 'div', ...props }) => {
+  const Component = as;
   const divRef = useRef(null);
   const [position, setPosition] = useState({ x: 0, y: 0 });
   const [opacity, setOpacity] = useState(0);

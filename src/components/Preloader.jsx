@@ -54,7 +54,7 @@ const Preloader = () => {
       }`}
     >
       <div className="flex items-center">
-        <span className="font-serif text-4xl sm:text-5xl md:text-7xl text-stone-50 tracking-tight">
+        <span className="font-serif text-4xl sm:text-5xl md:text-7xl text-[#f7f5f0] tracking-tight">
           {text}
         </span>
         {/* Cursor parpadeante verde */}

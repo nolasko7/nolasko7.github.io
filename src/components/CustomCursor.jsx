@@ -16,6 +16,7 @@ const CustomCursor = () => {
   useEffect(() => {
     // Detectamos si es un dispositivo táctil
     if ('ontouchstart' in window || navigator.maxTouchPoints > 0 || window.matchMedia("(pointer: coarse)").matches) {
+      // eslint-disable-next-line react-hooks/set-state-in-effect
       setIsTouchDevice(true);
       return;
     }

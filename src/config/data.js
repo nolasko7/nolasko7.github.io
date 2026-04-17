@@ -18,7 +18,7 @@ export const projects = [
   {
     title: "Sistema de Reservas de Cancha",
     video: courtixVideo,
-    type: "Web app en producción",
+    type: "Web app",
     description: "Plataforma integral de gestión deportiva. Digitaliza reservas y pagos de canchas, optimizando la administración de complejos deportivos reales.",
     problemSolved: "Digitaliza y agiliza el negocio automatizando reservas y pagos, minimizando la sobrecarga de comunicaciones a través de un dashboard de control centralizado.",
     tags: ["Node.js", "Express", "PostgreSQL", "React"],
