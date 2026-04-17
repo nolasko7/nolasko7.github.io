@@ -35,7 +35,7 @@ html.dark {
   
   --font-serif: "Fraunces", serif;
   --font-sans: "Jost", sans-serif;
-}
+} 
 
 @layer base {
   body {

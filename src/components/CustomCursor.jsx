@@ -1,15 +1,14 @@
 import { useEffect, useState, useRef } from 'react';
 
 const CustomCursor = () => {
-  const [isHovering, setIsHovering] = useState(false);
   const [isVisible, setIsVisible] = useState(false);
   const [isTouchDevice, setIsTouchDevice] = useState(false);
+  const [isHovering, setIsHovering] = useState(false);
 
   const cursorRef = useRef(null);
   const trailingRef = useRef(null);
   const requestRef = useRef(null);
 
-  // Mantenemos la posición real (mouse) y la retrasada (trailing)
   const mouse = useRef({ x: -100, y: -100 });
   const trailing = useRef({ x: -100, y: -100 });
 
@@ -26,7 +25,7 @@ const CustomCursor = () => {
 
     // Función de interpolación lineal (Lerp) para suavizar el movimiento a 60fps
     const animate = () => {
-      // El trailing sigue al cursor real a un ritmo del 15% por frame (genera un "delay" súper suave)
+      // El trailing sigue al cursor real
       trailing.current.x += (mouse.current.x - trailing.current.x) * 0.15;
       trailing.current.y += (mouse.current.y - trailing.current.y) * 0.15;
 
@@ -46,8 +45,8 @@ const CustomCursor = () => {
     };
 
     const onMouseOver = (e) => {
-      // Expandir en enlaces y botones (y tarjetas con as="a")
-      if (e.target.closest('a') || e.target.closest('button')) {
+      // Si estamos sobre un enlace o botón, activamos el estado hovering
+      if (e.target.closest('a, button')) {
         setIsHovering(true);
       } else {
         setIsHovering(false);
@@ -60,9 +59,9 @@ const CustomCursor = () => {
       }
     };
 
-    window.addEventListener('mousemove', onMouseMove);
-    window.addEventListener('mouseover', onMouseOver);
-    window.addEventListener('mouseout', onMouseOut);
+    window.addEventListener('mousemove', onMouseMove, { passive: true });
+    window.addEventListener('mouseover', onMouseOver, { passive: true });
+    window.addEventListener('mouseout', onMouseOut, { passive: true });
 
     return () => {
       window.removeEventListener('mousemove', onMouseMove);
@@ -71,7 +70,7 @@ const CustomCursor = () => {
       cancelAnimationFrame(requestRef.current);
       document.body.classList.remove('cursor-none-global');
     };
-  }, [isVisible, isTouchDevice]); // Removed isHovering from deps to maintain loop stability
+  }, [isVisible, isTouchDevice]);
 
   if (isTouchDevice || !isVisible) return null;
 
@@ -80,26 +79,17 @@ const CustomCursor = () => {
       {/* Capa 1: Punto sólido principal */}
       <div
         ref={cursorRef}
-        className="fixed top-0 left-0 pointer-events-none z-[10000] rounded-full mix-blend-difference"
-        style={{
-          width: isHovering ? '0px' : '8px',
-          height: isHovering ? '0px' : '8px',
-          backgroundColor: 'white',
-          transition: 'width 0.3s cubic-bezier(0.76, 0, 0.24, 1), height 0.3s cubic-bezier(0.76, 0, 0.24, 1)',
-        }}
+        className={`fixed top-0 left-0 pointer-events-none z-[10000] rounded-full bg-green-800 dark:bg-green-500 transition-all duration-200 ease-out ${
+          isHovering ? 'w-0 h-0 opacity-0' : 'w-2 h-2 opacity-100'
+        }`}
       />
       
-      {/* Capa 2: Anillo expansivo que se adapta al fondo */}
+      {/* Capa 2: Anillo expansivo */}
       <div
         ref={trailingRef}
-        className="fixed top-0 left-0 pointer-events-none z-[9999] rounded-full mix-blend-difference"
-        style={{
-          width: isHovering ? '44px' : '36px',
-          height: isHovering ? '44px' : '36px',
-          backgroundColor: 'white',
-          opacity: isHovering ? 0.15 : 0.3,
-          transition: 'width 0.4s cubic-bezier(0.76, 0, 0.24, 1), height 0.4s cubic-bezier(0.76, 0, 0.24, 1), opacity 0.4s cubic-bezier(0.76, 0, 0.24, 1)',
-        }}
+        className={`fixed top-0 left-0 pointer-events-none z-[9999] rounded-full bg-green-800 dark:bg-green-500 transition-all duration-300 ease-out ${
+          isHovering ? 'w-12 h-12 opacity-15' : 'w-8 h-8 opacity-30'
+        }`}
       />
     </>
   );

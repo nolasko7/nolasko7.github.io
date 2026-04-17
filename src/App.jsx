@@ -8,6 +8,7 @@ import Preloader from './components/Preloader';
 import SpotlightCard from './components/SpotlightCard';
 import StaggeredText from './components/StaggeredText';
 import GlitchText from './components/GlitchText';
+import TerminalText from './components/TerminalText';
 
 function App() {
   useScrollReveal();
@@ -99,10 +100,13 @@ function App() {
       {/* Hero Section */}
       <section className="pt-24 sm:pt-40 pb-20 px-6 max-w-[900px] mx-auto min-h-[80vh] flex flex-col justify-center reveal">
         <div className="flex flex-wrap items-center gap-4 mb-8">
-          <div className="flex items-center gap-4">
-            <div className="w-12 h-[1px] bg-green-800"></div>
-            <span className="uppercase tracking-widest text-xs text-green-800 font-medium">{personalInfo.role}</span>
-          </div>
+          <TerminalText 
+            delay={300} 
+            commands={[
+              { type: 'input', text: './init_portfolio.sh', speed: 60, postDelay: 400 },
+              { type: 'output', text: `[OK] ${personalInfo.role} cargado.`, postDelay: 1000 }
+            ]} 
+          />
           <a href="#contacto" className="flex items-center gap-2 px-3 py-1 bg-green-50 border border-green-200 rounded-full hover:bg-green-100 transition-colors group">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
