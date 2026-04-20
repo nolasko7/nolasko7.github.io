@@ -3,6 +3,7 @@
 html, body {
   scroll-behavior: smooth;
   overflow-x: hidden;
+  background-color: var(--app-bg);
 }
 
 :root {

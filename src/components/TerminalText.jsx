@@ -71,7 +71,7 @@ const TerminalText = ({ commands, delay = 0 }) => {
       {currentCommand?.type === 'input' && (
         <span className="mr-2 text-stone-400">~</span>
       )}
-      <span>{text}</span>
+      <span>{currentCommand?.type === 'output' ? currentCommand.text : text}</span>
       {(isTyping || currentCommandIndex < commands.length) && (
         <span className={`inline-block w-2 h-3 ml-1 bg-green-800 ${showCursor ? 'opacity-100' : 'opacity-0'}`}></span>
       )}
