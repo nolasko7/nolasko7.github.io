@@ -9,6 +9,8 @@ import SpotlightCard from './components/SpotlightCard';
 import StaggeredText from './components/StaggeredText';
 import GlitchText from './components/GlitchText';
 import TerminalText from './components/TerminalText';
+import ContactForm from './components/ContactForm';
+import ProjectModal from './components/ProjectModal';
 
 function App() {
   useScrollReveal();
@@ -22,6 +24,8 @@ function App() {
     return false;
   });
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
+  const [selectedProject, setSelectedProject] = useState(null);
+  const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
 
   useEffect(() => {
     if (isDarkMode) {
@@ -292,9 +296,12 @@ function App() {
           {projects.map((project, index) => (
             <SpotlightCard
               key={index}
-              as="a"
-              href={project.link}
-              className="reveal block group bg-white rounded-xl shadow-sm hover:shadow-md hover-lift transition-all duration-500"
+              as="div"
+              onClick={() => {
+                setSelectedProject(project);
+                setIsProjectModalOpen(true);
+              }}
+              className="reveal block group bg-white rounded-xl shadow-sm hover:shadow-md hover-lift transition-all duration-500 cursor-pointer"
               innerClassName="p-8 flex flex-col sm:flex-row gap-6 items-start sm:items-center w-full h-full"
               style={{ transitionDelay: `${index * 80}ms` }}
             >
@@ -415,13 +422,13 @@ function App() {
           <div className="grid grid-cols-2 gap-8 border-l border-stone-200 pl-8 md:pl-16">
             <div>
               <span className="block text-4xl font-serif text-green-800 mb-2">
-                <AnimatedCounter end={3} suffix="+" duration={2000} />
+                <AnimatedCounter end={2} suffix="+" duration={2000} />
               </span>
               <span className="text-sm font-light uppercase tracking-widest text-warm-gray">{sections.expYears}</span>
             </div>
             <div>
               <span className="block text-4xl font-serif text-green-800 mb-2">
-                <AnimatedCounter end={10} suffix="+" duration={2500} />
+                <AnimatedCounter end={5} suffix="+" duration={2500} />
               </span>
               <span className="text-sm font-light uppercase tracking-widest text-warm-gray">{sections.projectsCount}</span>
             </div>
@@ -432,14 +439,23 @@ function App() {
       {/* Contacto & Footer */}
       <section id="contacto" className="bg-[#141410] text-stone-300 pb-8 pt-16 sm:pt-32 px-6">
         <div className="max-w-[900px] mx-auto">
-          <div className="mb-24 reveal">
-            <h2 className="text-4xl md:text-5xl font-serif text-[#f7f5f0] mb-6">
-              {sections.contactTitle} <br /><span className="text-green-500 italic text-3xl md:text-4xl">{sections.contactSubtitle}</span>
-            </h2>
-            <p className="font-light text-lg mb-12 max-w-md text-stone-400">
-              {sections.contactText}
-            </p>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+          <div className="mb-24 reveal grid md:grid-cols-2 gap-12 md:gap-16 items-start">
+            {/* Left: Form */}
+            <div>
+              <h2 className="text-4xl md:text-5xl font-serif text-[#f7f5f0] mb-6">
+                {sections.contactTitle} <br /><span className="text-green-500 italic text-3xl md:text-4xl">{sections.contactSubtitle}</span>
+              </h2>
+              <p className="font-light text-lg mb-8 text-stone-400">
+                {sections.contactText}
+              </p>
+              <ContactForm language={language} />
+            </div>
+
+            {/* Right: Direct links */}
+            <div className="flex flex-col gap-3">
+              <span className="text-[10px] font-mono uppercase tracking-widest text-stone-500 mb-2 block">
+                {language === 'es' ? 'O contactame directo' : 'Or reach me directly'}
+              </span>
               <a href={`mailto:${personalInfo.email}`} className="group flex items-center justify-between border border-stone-800 bg-stone-900/50 hover:border-green-500 p-5 rounded-xl transition-colors">
                 <div className="flex items-center gap-4">
                   <svg className="w-5 h-5 text-stone-400 group-hover:text-green-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
@@ -486,6 +502,14 @@ function App() {
           </div>
         </div>
       </section>
+
+      {/* Project Modal */}
+      <ProjectModal 
+        project={selectedProject} 
+        isOpen={isProjectModalOpen} 
+        onClose={() => setIsProjectModalOpen(false)} 
+        language={language}
+      />
 
     </div>
   );

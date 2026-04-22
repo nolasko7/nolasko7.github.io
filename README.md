@@ -1,5 +1,5 @@
 🌿 Valentin - Portfolio Personal
-Este es mi portfolio profesional donde presento mis trabajos como Full Stack Developer. El sitio está diseñado con un enfoque minimalista y "premium", centrándose en soluciones reales que actualmente se encuentran en producción.
+Este es mi portfolio profesional donde presento mis trabajos como Software Developer. El sitio está diseñado con un enfoque minimalista y "premium", centrándose en soluciones reales que actualmente se encuentran en producción.
 
 🚀 Tecnologías Utilizadas
 El proyecto utiliza un stack moderno para garantizar rendimiento y escalabilidad:
