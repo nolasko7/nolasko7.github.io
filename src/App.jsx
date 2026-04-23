@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import Lenis from 'lenis';
 import { useScrollReveal } from './hooks/useScrollReveal';
 import { portfolioData } from './config/data';
 import CustomCursor from './components/CustomCursor';
@@ -27,6 +28,31 @@ function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
   const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
+
+  // Smooth Scroll Initialization (Lenis)
+  useEffect(() => {
+    const lenis = new Lenis({
+      duration: 1.2,
+      easing: (t) => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
+      orientation: 'vertical',
+      gestureOrientation: 'vertical',
+      smoothWheel: true,
+      wheelMultiplier: 1,
+      smoothTouch: false,
+      touchMultiplier: 2,
+    });
+
+    function raf(time) {
+      lenis.raf(time);
+      requestAnimationFrame(raf);
+    }
+
+    requestAnimationFrame(raf);
+
+    return () => {
+      lenis.destroy();
+    };
+  }, []);
 
   useEffect(() => {
     if (isDarkMode) {
@@ -318,6 +344,14 @@ function App() {
                     muted
                     playsInline
                     className={`w-full h-full group-hover:scale-105 transition-transform duration-700 ${project.videoClass || 'object-cover'}`}
+                  />
+                </div>
+              ) : project.images && project.images.length > 0 ? (
+                <div className="w-full h-56 sm:w-64 sm:h-40 group-hover:sm:w-80 group-hover:sm:h-48 flex-shrink-0 rounded-lg overflow-hidden bg-stone-200/50 flex justify-center items-center relative shadow-sm group-hover:shadow-md transition-all duration-500 ease-out">
+                  <img
+                    src={project.images[0]}
+                    alt={project.title}
+                    className="w-full h-full group-hover:scale-105 transition-transform duration-700 object-cover"
                   />
                 </div>
               ) : (

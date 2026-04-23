@@ -20,6 +20,10 @@ import almacenImg1 from '../assets/Almacen1.png';
 import almacenImg2 from '../assets/Almacen2.png';
 import almacenImg3 from '../assets/Almacen3.png';
 
+import nasaCert from '../assets/CertificadoNASA.jpg';
+import rainImg0 from '../assets/willitrain0.png';
+import rainImg1 from '../assets/willitrain1.png';
+
 export const portfolioData = {
   es: {
     personalInfo: {
@@ -66,6 +70,15 @@ export const portfolioData = {
         problemSolved: "Agiliza el flujo de ventas e impide quiebres de stock sincronizando la lectura física de productos en el almacén directamente con la base de datos central.",
         tags: ["Dart", "Flutter", "MySQL", "Android Studio"],
         link: "#"
+      },
+      {
+        title: "NASA Space Apps Challenge",
+        images: [nasaCert, rainImg0, rainImg1],
+        type: "Hackathon Internacional · 2025",
+        description: "Participación en el hackathon más grande del mundo organizado por la NASA, ESA y otras agencias espaciales. Desarrollamos 'Will it rain', una solución para la predicción y visualización meteorológica.",
+        problemSolved: "Desarrollo de una solución tecnológica grupal bajo presión de tiempo, enfocada en el trabajo colaborativo, la resolución de problemas complejos y la comunicación efectiva en un equipo internacional.",
+        tags: ["NASA API", "Data Visualization", "Teamwork", "Problem Solving"],
+        link: "#"
       }
     ],
     skills: [
@@ -99,7 +112,7 @@ export const portfolioData = {
       aboutTitle: "Sobre Mí",
       aboutP1: "Soy desarrollador de software de Villa Mercedes, Argentina. Estoy por recibirme de Analista en Sistemas y terminando mi carrera como Ingeniero en Sistemas. Me especializo en construir productos que resuelven problemas reales: sistemas de turnos, automatizaciones con WhatsApp y aplicaciones móviles que la gente usa todos los días.",
       aboutP2: "Algunos de mis proyectos están en producción y los usan clientes reales. Eso me enseñó más que cualquier curso — a tomar decisiones bajo presión, a priorizar lo que funciona y a iterar rápido cuando algo falla.",
-      aboutAvailability: "Disponible para proyectos freelance y posiciones remotas.",
+      aboutAvailability: "Disponible para proyectos freelance and remote positions.",
       expYears: "Años de Exp.",
       projectsCount: "Proyectos",
       contactTitle: "¿Listo para empezar?",
@@ -153,6 +166,15 @@ export const portfolioData = {
         description: "Mobile application for inventory control used in real retail stores. Implements camera scanning to synchronize physical stock with databases in real-time.",
         problemSolved: "Speeds up the sales flow and prevents stockouts by synchronizing physical product scanning in the warehouse directly with the central database.",
         tags: ["Dart", "Flutter", "MySQL", "Android Studio"],
+        link: "#"
+      },
+      {
+        title: "NASA Space Apps Challenge",
+        images: [nasaCert, rainImg0, rainImg1],
+        type: "International Hackathon · 2025",
+        description: "Participation in the world's largest hackathon organized by NASA, ESA, and other space agencies. We developed 'Will it rain', a solution for weather prediction and visualization.",
+        problemSolved: "Developed a group technological solution under time pressure, focusing on collaborative work, complex problem solving, and effective communication in an international team.",
+        tags: ["NASA API", "Data Visualization", "Teamwork", "Problem Solving"],
         link: "#"
       }
     ],

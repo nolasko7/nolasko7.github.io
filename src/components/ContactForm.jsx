@@ -1,5 +1,6 @@
 import { useState, useRef } from 'react';
 import emailjs from '@emailjs/browser';
+import ReCAPTCHA from 'react-google-recaptcha';
 
 const TEXTS = {
   es: {
@@ -15,6 +16,8 @@ const TEXTS = {
     successSub: 'Suelo responder en menos de 24 horas.',
     sendAnother: 'Enviar otro',
     error: 'Algo falló al enviar. Probá de nuevo o contactame directo.',
+    spam: 'Has enviado un mensaje recientemente. Por favor espera unas horas.',
+    captcha: 'Por favor, completa el captcha.',
   },
   en: {
     nameLabel: 'Name',
@@ -29,28 +32,70 @@ const TEXTS = {
     successSub: 'I usually reply within 24 hours.',
     sendAnother: 'Send another',
     error: 'Something went wrong. Try again or reach out directly.',
+    spam: 'You sent a message recently. Please wait a few hours.',
+    captcha: 'Please complete the captcha.',
   },
 };
 
+const COOLDOWN_TIME = 60 * 60 * 1000; // 1 hour
+
 export default function ContactForm({ language = 'es' }) {
   const formRef = useRef(null);
-  const [status, setStatus] = useState('idle'); // idle | loading | success | error
+  const recaptchaRef = useRef(null);
+  const [status, setStatus] = useState('idle'); // idle | loading | success | error | spam | captcha
   const t = TEXTS[language] || TEXTS.es;
+
+  const checkRateLimit = () => {
+    const lastSent = localStorage.getItem('last_email_sent');
+    if (lastSent) {
+      const timeSinceLastSent = Date.now() - parseInt(lastSent, 10);
+      if (timeSinceLastSent < COOLDOWN_TIME) {
+        return false; // Rate limited
+      }
+    }
+    return true;
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
+    
+    // Honeypot check for simple bots
+    const formData = new FormData(formRef.current);
+    if (formData.get('_honey')) {
+      setStatus('success');
+      formRef.current.reset();
+      return;
+    }
+
+    // Rate limiting for human spam
+    if (!checkRateLimit()) {
+      setStatus('spam');
+      return;
+    }
+
     setStatus('loading');
     try {
+      // reCAPTCHA v2 Invisible: Execute it and wait for the token
+      if (import.meta.env.VITE_CAPTCHA_SITE_KEY) {
+        const token = await recaptchaRef.current.executeAsync();
+        if (!token) {
+          setStatus('captcha');
+          return;
+        }
+      }
+
       await emailjs.sendForm(
         import.meta.env.VITE_EMAILJS_SERVICE_ID,
         import.meta.env.VITE_EMAILJS_TEMPLATE_ID,
         formRef.current,
         import.meta.env.VITE_EMAILJS_PUBLIC_KEY
       );
+
+      localStorage.setItem('last_email_sent', Date.now().toString());
       setStatus('success');
       formRef.current.reset();
     } catch (err) {
-      console.error('[EmailJS error]', err);
+      console.error('[Error enviando mensaje]', err);
       setStatus('error');
     }
   };
@@ -79,11 +124,14 @@ export default function ContactForm({ language = 'es' }) {
   /* ── Form ── */
   return (
     <form ref={formRef} onSubmit={handleSubmit} className="flex flex-col gap-4">
+      {/* Honeypot */}
+      <div className="hidden" aria-hidden="true">
+        <input type="text" name="_honey" tabIndex="-1" autoComplete="off" />
+      </div>
+
       {/* Name */}
       <div className="flex flex-col gap-1.5">
-        <label className="text-[10px] font-mono uppercase tracking-widest text-stone-400">
-          {t.nameLabel}
-        </label>
+        <label className="text-[10px] font-mono uppercase tracking-widest text-stone-400">{t.nameLabel}</label>
         <input
           type="text"
           name="from_name"
@@ -95,9 +143,7 @@ export default function ContactForm({ language = 'es' }) {
 
       {/* Email */}
       <div className="flex flex-col gap-1.5">
-        <label className="text-[10px] font-mono uppercase tracking-widest text-stone-400">
-          {t.emailLabel}
-        </label>
+        <label className="text-[10px] font-mono uppercase tracking-widest text-stone-400">{t.emailLabel}</label>
         <input
           type="email"
           name="reply_to"
@@ -109,9 +155,7 @@ export default function ContactForm({ language = 'es' }) {
 
       {/* Message */}
       <div className="flex flex-col gap-1.5">
-        <label className="text-[10px] font-mono uppercase tracking-widest text-stone-400">
-          {t.messageLabel}
-        </label>
+        <label className="text-[10px] font-mono uppercase tracking-widest text-stone-400">{t.messageLabel}</label>
         <textarea
           name="message"
           required
@@ -121,10 +165,23 @@ export default function ContactForm({ language = 'es' }) {
         />
       </div>
 
-      {/* Error */}
-      {status === 'error' && (
-        <p className="text-red-400 text-xs font-mono border border-red-900/50 bg-red-950/30 rounded-lg px-3 py-2">
-          ⚠ {t.error}
+      {/* Invisible reCAPTCHA v2 */}
+      {import.meta.env.VITE_CAPTCHA_SITE_KEY && (
+        <div className="flex justify-center my-2 scale-90 origin-center">
+          <ReCAPTCHA
+            ref={recaptchaRef}
+            size="invisible"
+            sitekey={import.meta.env.VITE_CAPTCHA_SITE_KEY}
+            theme="dark"
+            badge="inline"
+          />
+        </div>
+      )}
+
+      {/* Error / Spam / Captcha messages */}
+      {(status === 'error' || status === 'spam' || status === 'captcha') && (
+        <p className="text-amber-400 text-xs font-mono border border-amber-900/50 bg-amber-950/30 rounded-lg px-3 py-2">
+          ⚠ {t[status]}
         </p>
       )}
 
