@@ -3,6 +3,30 @@ import React, { useState, useEffect } from 'react';
 const ProjectModal = ({ project, isOpen, onClose, language }) => {
   const [currentImageIndex, setCurrentImageIndex] = useState(0);
   const [isAnimating, setIsAnimating] = useState(false);
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
+
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e) => setTouchEnd(e.targetTouches[0].clientX);
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+    
+    if (isLeftSwipe) {
+      handleNext();
+    } else if (isRightSwipe) {
+      handlePrev();
+    }
+  };
 
   // Reset index when project changes
   useEffect(() => {
@@ -78,7 +102,12 @@ const ProjectModal = ({ project, isOpen, onClose, language }) => {
         {/* Body Container (Scrollable) */}
         <div className="flex-1 overflow-y-auto max-h-[calc(90vh-100px)]">
           {/* Image Carousel */}
-          <div className="relative w-full aspect-video bg-stone-200 dark:bg-stone-900 group">
+          <div 
+            className="relative w-full aspect-video bg-stone-200 dark:bg-stone-900 group"
+            onTouchStart={onTouchStart}
+            onTouchMove={onTouchMove}
+            onTouchEnd={onTouchEnd}
+          >
             {images.length > 0 ? (
               <>
                 <img 
