@@ -48,7 +48,8 @@ export const portfolioData = {
         description: "Plataforma integral de gestión deportiva. Digitaliza reservas y pagos de canchas, optimizando la administración de complejos deportivos reales.",
         problemSolved: "Digitaliza y agiliza el negocio automatizando reservas y pagos, minimizando la sobrecarga de comunicaciones a través de un dashboard de control centralizado.",
         tags: ["Node.js", "Express", "PostgreSQL", "React"],
-        link: "#"
+        link: "https://github.com/nolasko7",
+        github: "#"
       },
       {
         title: "Gestión de Turnos con Chatbot",
@@ -58,7 +59,8 @@ export const portfolioData = {
         description: "Desarrollé un sistema de turnos con bot de WhatsApp que está en producción y lo usa una peluquería real. Maneja reservas automáticamente sin intervención humana.",
         problemSolved: "Optimiza exponencialmente el tiempo del peluquero al delegar la interacción en el bot, asegurando que los turnos estén siempre perfectamente organizados en la agenda de forma automática.",
         tags: ["Next.js", "Node.js", "WhatsApp API", "PostgreSQL", "Docker", "Cloudflare", "Github Actions", "MySQL"],
-        link: "#"
+        link: "https://github.com/nolasko7",
+        github: "#"
       },
       {
         title: "App de Gestión de Stock",
@@ -69,7 +71,8 @@ export const portfolioData = {
         description: "Aplicación móvil para control de inventario utilizada en comercios reales. Implementa escaneo con cámara para sincronizar stock físico con bases de datos en tiempo real.",
         problemSolved: "Agiliza el flujo de ventas e impide quiebres de stock sincronizando la lectura física de productos en el almacén directamente con la base de datos central.",
         tags: ["Dart", "Flutter", "MySQL", "Android Studio"],
-        link: "#"
+        link: "https://github.com/nolasko7",
+        github: "#"
       },
       {
         title: "NASA Space Apps Challenge",
@@ -78,7 +81,8 @@ export const portfolioData = {
         description: "Participación en el hackathon más grande del mundo organizado por la NASA, ESA y otras agencias espaciales. Desarrollamos 'Will it rain', una solución para la predicción y visualización meteorológica.",
         problemSolved: "Desarrollo de una solución tecnológica grupal bajo presión de tiempo, enfocada en el trabajo colaborativo, la resolución de problemas complejos y la comunicación efectiva en un equipo internacional.",
         tags: ["NASA API", "Data Visualization", "Teamwork", "Problem Solving"],
-        link: "#"
+        link: "https://github.com/nolasko7",
+        github: "#"
       }
     ],
     skills: [
@@ -126,6 +130,7 @@ export const portfolioData = {
     personalInfo: {
       name: "Valentin",
       role: "Software Developer · Web & Mobile · Automation",
+      currentStatus: "2025 · Systems Analyst — graduating soon",
       description: "Software Developer from Villa Mercedes, Argentina. Three projects in production used by real clients — from WhatsApp bots to mobile inventory apps.",
       email: "valentin.nolasco123123@gmail.com", 
       github: "https://github.com/nolasko7", 
@@ -145,7 +150,8 @@ export const portfolioData = {
         description: "Comprehensive sports management platform. Digitalizes court reservations and payments, optimizing the administration of real sports complexes.",
         problemSolved: "Digitalizes and speeds up the business by automating reservations and payments, minimizing communication overhead through a centralized control dashboard.",
         tags: ["Node.js", "Express", "PostgreSQL", "React"],
-        link: "#"
+        link: "https://github.com/nolasko7",
+        github: "#"
       },
       {
         title: "Appointment Management with Chatbot",
@@ -155,7 +161,8 @@ export const portfolioData = {
         description: "Developed an appointment system with a WhatsApp bot currently in production, used by a real hair salon. Handles reservations automatically without human intervention.",
         problemSolved: "Exponentially optimizes the hairdresser's time by delegating interactions to the bot, ensuring appointments are perfectly and automatically organized in the agenda.",
         tags: ["Next.js", "Node.js", "WhatsApp API", "PostgreSQL", "Docker", "Cloudflare", "Github Actions", "MySQL"],
-        link: "#"
+        link: "https://github.com/nolasko7",
+        github: "#"
       },
       {
         title: "Inventory Management App",
@@ -166,7 +173,8 @@ export const portfolioData = {
         description: "Mobile application for inventory control used in real retail stores. Implements camera scanning to synchronize physical stock with databases in real-time.",
         problemSolved: "Speeds up the sales flow and prevents stockouts by synchronizing physical product scanning in the warehouse directly with the central database.",
         tags: ["Dart", "Flutter", "MySQL", "Android Studio"],
-        link: "#"
+        link: "https://github.com/nolasko7",
+        github: "#"
       },
       {
         title: "NASA Space Apps Challenge",
@@ -175,7 +183,8 @@ export const portfolioData = {
         description: "Participation in the world's largest hackathon organized by NASA, ESA, and other space agencies. We developed 'Will it rain', a solution for weather prediction and visualization.",
         problemSolved: "Developed a group technological solution under time pressure, focusing on collaborative work, complex problem solving, and effective communication in an international team.",
         tags: ["NASA API", "Data Visualization", "Teamwork", "Problem Solving"],
-        link: "#"
+        link: "https://github.com/nolasko7",
+        github: "#"
       }
     ],
     skills: [

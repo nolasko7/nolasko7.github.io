@@ -5,7 +5,10 @@ const TerminalSkills = ({ skills, language }) => {
   const [displayedText, setDisplayedText] = useState('');
   const [isTyping, setIsTyping] = useState(false);
   const [isMenuOpen, setIsMenuOpen] = useState(false);
+  const [seenTabs, setSeenTabs] = useState(new Set());
+  const [copied, setCopied] = useState(false);
   const menuRef = useRef(null);
+  const typingIntervalRef = useRef(null);
 
   const activeSkill = skills[activeTab];
 
@@ -164,24 +167,68 @@ tools.forEach(tool => {
   };
 
   useEffect(() => {
+    const fullText = getCodeSnippet(activeSkill.subtitle, activeSkill.name);
+    
+    if (seenTabs.has(activeTab)) {
+      setDisplayedText(fullText);
+      setIsTyping(false);
+      return;
+    }
+
     setIsTyping(true);
     setDisplayedText('');
+    setSeenTabs(prev => new Set(prev).add(activeTab));
     
-    const fullText = getCodeSnippet(activeSkill.subtitle, activeSkill.name);
     let i = 0;
     
-    const typingInterval = setInterval(() => {
+    typingIntervalRef.current = setInterval(() => {
       if (i < fullText.length) {
         setDisplayedText(fullText.substring(0, i + 1));
         i++;
       } else {
         setIsTyping(false);
-        clearInterval(typingInterval);
+        clearInterval(typingIntervalRef.current);
       }
     }, 15);
 
-    return () => clearInterval(typingInterval);
+    return () => clearInterval(typingIntervalRef.current);
   }, [activeTab]);
+
+  const handleSkipTyping = () => {
+    if (isTyping) {
+      clearInterval(typingIntervalRef.current);
+      setIsTyping(false);
+      setDisplayedText(getCodeSnippet(activeSkill.subtitle, activeSkill.name));
+    }
+  };
+
+  const handleCopy = (e) => {
+    e.stopPropagation();
+    const textToCopy = getCodeSnippet(activeSkill.subtitle, activeSkill.name);
+    navigator.clipboard.writeText(textToCopy);
+    setCopied(true);
+    setTimeout(() => setCopied(false), 2000);
+  };
+
+  const getLangIcon = (subtitle) => {
+    const icons = {
+      'Frontend':           { color: '#61dafb', label: 'jsx' },
+      'Backend APIs':       { color: '#68a063', label: 'js' },
+      'Mobile Development': { color: '#00b4ab', label: 'dart' },
+      'Database':           { color: '#f29111', label: 'sql' },
+      'Deployment':         { color: '#e34f26', label: 'yml' },
+      'Automation':         { color: '#25d366', label: 'bot' },
+    };
+    const icon = icons[subtitle] || { color: '#888', label: 'js' };
+    return (
+      <span 
+        className="text-[9px] font-mono font-bold px-1 py-0.5 rounded"
+        style={{ background: icon.color + '22', color: icon.color }}
+      >
+        {icon.label}
+      </span>
+    );
+  };
 
   const toggleMenu = () => setIsMenuOpen(!isMenuOpen);
 
@@ -206,7 +253,7 @@ tools.forEach(tool => {
             onClick={toggleMenu}
             className="flex items-center gap-2 px-3 py-1.5 bg-stone-200 dark:bg-stone-800 rounded-lg text-xs font-mono text-stone-700 dark:text-stone-300 border border-stone-300 dark:border-stone-700 transition-colors"
           >
-            <span className="text-green-500">📁</span>
+            <span>{getLangIcon(activeSkill.subtitle)}</span>
             {activeSkill.subtitle}
             <svg 
               className={`w-3 h-3 transition-transform duration-300 ${isMenuOpen ? 'rotate-180' : ''}`} 
@@ -271,9 +318,9 @@ tools.forEach(tool => {
                     : 'text-stone-600 dark:text-stone-400 hover:bg-stone-200/50 dark:hover:bg-stone-800/30 hover:text-dark dark:hover:text-stone-300 border border-transparent'
                 }`}
               >
-                <svg className={`w-4 h-4 ${isActive ? 'text-green-500' : 'text-stone-400'}`} fill="currentColor" viewBox="0 0 24 24">
-                  <path d="M10 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2h-8l-2-2z" />
-                </svg>
+                <span className={isActive ? 'opacity-100' : 'opacity-50 grayscale transition-all duration-300 group-hover:grayscale-0 group-hover:opacity-100'}>
+                  {getLangIcon(skill.subtitle)}
+                </span>
                 {skill.subtitle}
               </button>
             );
@@ -284,7 +331,7 @@ tools.forEach(tool => {
       {/* Main Content (Editor / Terminal) */}
       <div className="w-full md:w-2/3 flex flex-col bg-[#1e1e1e] text-[#d4d4d4] min-h-[350px] md:min-h-[450px]">
         {/* Editor Tabs (Desktop & Tablet) */}
-        <div className="flex bg-[#2d2d2d] overflow-x-auto border-b border-[#1e1e1e] hide-scrollbar">
+        <div className="flex justify-between items-center bg-[#2d2d2d] overflow-x-auto border-b border-[#1e1e1e] hide-scrollbar">
           <div className="px-4 py-2.5 bg-[#1e1e1e] border-t-[3px] border-t-green-500 text-[13px] font-mono text-[#ffffff] flex items-center gap-2 min-w-max">
             <svg className="w-4 h-4 text-[#519aba]" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
@@ -292,10 +339,26 @@ tools.forEach(tool => {
             {activeSkill.subtitle.toLowerCase().replace(' ', '_')}.{activeSkill.subtitle === 'Database' ? 'sql' : activeSkill.subtitle === 'Deployment' ? 'yml' : activeSkill.subtitle === 'Mobile Development' ? 'dart' : 'js'}
             <button className="ml-2 w-4 h-4 rounded hover:bg-[#333333] flex items-center justify-center text-stone-400 hover:text-[#ffffff] transition-colors">×</button>
           </div>
+          <button onClick={handleCopy} className="mr-4 text-[#858585] hover:text-[#ffffff] transition-colors flex items-center gap-1.5 text-[11px] uppercase tracking-wider">
+            {copied ? (
+              <><svg className="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg> <span className="text-green-500">Copied</span></>
+            ) : (
+              <><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg> Copy</>
+            )}
+          </button>
         </div>
 
         {/* Editor Body */}
-        <div className="p-4 md:p-6 overflow-y-auto flex-1 font-mono text-[11px] md:text-[13px] leading-relaxed whitespace-pre font-light">
+        <div 
+          className="p-4 md:p-6 overflow-y-auto flex-1 font-mono text-[11px] md:text-[13px] leading-relaxed whitespace-pre font-light cursor-text" 
+          onClick={() => {
+            if (isTyping) {
+              setDisplayedText(getCodeSnippet(activeSkill.subtitle, activeSkill.name));
+              setIsTyping(false);
+            }
+          }}
+          title={isTyping ? (language === 'es' ? 'Click para saltar' : 'Click to skip') : ''}
+        >
           {displayedText.split('\n').map((line, idx) => (
             <div key={idx} className="flex">
               <span className="text-[#858585] select-none text-right pr-4 min-w-[2rem] md:min-w-[2.5rem] border-r border-[#404040] mr-4">{idx + 1}</span>

@@ -20,11 +20,11 @@ const TechMarquee = () => {
                 </span>
                 {/* Dot separator */}
                 {index !== technologies.length - 1 && (
-                  <div className="w-1.5 h-1.5 rounded-full bg-stone-300"></div>
+                  <div className="w-1.5 h-1.5 rounded-full bg-stone-300 dark:bg-stone-600"></div>
                 )}
                 {/* Add a dot after the last item of the first list too, so the seamless loop looks perfect */}
                 {index === technologies.length - 1 && (
-                  <div className="w-1.5 h-1.5 rounded-full bg-stone-300"></div>
+                  <div className="w-1.5 h-1.5 rounded-full bg-stone-300 dark:bg-stone-600"></div>
                 )}
               </div>
             ))}
