@@ -126,7 +126,7 @@ function App() {
       {/* Navigation */}
       <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled || isMobileMenuOpen ? 'bg-stone-50/80 backdrop-blur-md border-b border-stone-200/50 py-2' : 'bg-transparent py-4'}`}>
         <div className="max-w-[900px] mx-auto px-6 flex items-center justify-between relative z-50">
-          <button onClick={() => scrollTo(0)} className="font-serif text-xl text-dark dark:text-[#f7f5f0] tracking-tight hover:text-green-800 dark:hover:text-green-500 transition-colors active:scale-95 origin-left">{personalInfo.name}</button>
+          <button onClick={() => scrollTo(0)} className="font-serif text-xl text-dark tracking-tight hover:text-green-800 dark:hover:text-green-500 transition-colors active:scale-95 origin-left">{personalInfo.name}</button>
           
           {/* Desktop Menu */}
           <div className="hidden sm:flex items-center gap-6 text-xs font-medium uppercase tracking-widest whitespace-nowrap">
