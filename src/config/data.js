@@ -29,6 +29,7 @@ export const portfolioData = {
     personalInfo: {
       name: "Valentin",
       role: "Software Developer · Web & Mobile · Automatizacion",
+      currentStatus: "2026 · Próximo Analista en Sistemas",
       description: "Software Developer de Villa Mercedes, Argentina. Tres proyectos en producción usados por clientes reales — desde bots de WhatsApp hasta apps móviles de gestión de stock.",
       email: "valentin.nolasco123123@gmail.com", 
       github: "https://github.com/nolasko7", 
@@ -130,7 +131,7 @@ export const portfolioData = {
     personalInfo: {
       name: "Valentin",
       role: "Software Developer · Web & Mobile · Automation",
-      currentStatus: "2025 · Systems Analyst — graduating soon",
+      currentStatus: "2026 · Systems Analyst — graduating soon",
       description: "Software Developer from Villa Mercedes, Argentina. Three projects in production used by real clients — from WhatsApp bots to mobile inventory apps.",
       email: "valentin.nolasco123123@gmail.com", 
       github: "https://github.com/nolasko7", 
