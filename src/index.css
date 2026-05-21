@@ -61,6 +61,8 @@ html.dark {
   --font-sans: "Jost", sans-serif;
 } 
 
+@custom-variant dark (&:where(.dark, .dark *));
+
 @layer base {
   body {
     background-color: var(--color-stone-50);

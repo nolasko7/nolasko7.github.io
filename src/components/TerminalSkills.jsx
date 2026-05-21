@@ -238,7 +238,7 @@ tools.forEach(tool => {
   };
 
   return (
-    <div className="w-full rounded-2xl overflow-hidden shadow-2xl border border-stone-200/50 dark:border-stone-800/50 bg-stone-50 dark:bg-[#0a0a08] flex flex-col md:flex-row reveal">
+    <div className="dark w-full rounded-2xl overflow-hidden shadow-2xl border border-stone-200/50 dark:border-stone-800/50 bg-stone-50 dark:bg-[#0a0a08] flex flex-col md:flex-row reveal">
       
       {/* Mobile Header / Hamburger */}
       <div className="md:hidden flex items-center justify-between p-4 border-b border-stone-200/50 dark:border-stone-800/50 bg-stone-100/80 dark:bg-[#141410]/80 sticky top-0 z-20 backdrop-blur-sm">
