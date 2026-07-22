@@ -28,7 +28,7 @@ export const portfolioData = {
   es: {
     personalInfo: {
       name: "Valentin",
-      role: "Software Developer · Web & Mobile · Automatizacion",
+      role: "Software Developer · Web & Mobile · Ciberseguridad",
       currentStatus: "2026 · Próximo Analista en Sistemas",
       description: "Software Developer de Villa Mercedes, Argentina. Tres proyectos en producción usados por clientes reales — desde bots de WhatsApp hasta apps móviles de gestión de stock.",
       email: "valentin.nolasco123123@gmail.com", 
@@ -92,7 +92,8 @@ export const portfolioData = {
       { name: "Flutter / Dart / Android Studio", subtitle: "Mobile Development" },
       { name: "PostgreSQL / SQL", subtitle: "Database" },
       { name: "Docker / Cloudflare / Github Actions", subtitle: "Deployment" },
-      { name: "WhatsApp API / LLM", subtitle: "Automation" }
+      { name: "WhatsApp API / LLM", subtitle: "Automation" },
+      { name: "SIEM (Splunk, Chronicle) / Wireshark / Suricata / tcpdump / Linux CLI", subtitle: "Cybersecurity" }
     ],
     nav: {
       projects: "Proyectos",
@@ -104,7 +105,7 @@ export const portfolioData = {
       menu: "[ Menu ]"
     },
     hero: {
-      loaded: "cargado.",
+      loaded: "",
       availability: "Disponible para posiciones part-time o fulltime flexible",
       titleHighlight: ["producto", "en", "producción"],
       title: "Del problema real al producto en producción.",
@@ -117,6 +118,7 @@ export const portfolioData = {
       aboutTitle: "Sobre Mí",
       aboutP1: "Soy desarrollador de software de Villa Mercedes, Argentina. Estoy por recibirme de Analista en Sistemas y terminando mi carrera como Ingeniero en Sistemas. Me especializo en construir productos que resuelven problemas reales: sistemas de turnos, automatizaciones con WhatsApp y aplicaciones móviles que la gente usa todos los días.",
       aboutP2: "Algunos de mis proyectos están en producción y los usan clientes reales. Eso me enseñó más que cualquier curso — a tomar decisiones bajo presión, a priorizar lo que funciona y a iterar rápido cuando algo falla.",
+      aboutP3: "Actualmente estoy completando el Certificado Profesional de Ciberseguridad de Google, donde profundicé en herramientas SIEM (Splunk, Chronicle), análisis de tráfico de red con Wireshark y tcpdump, detección de intrusiones con Suricata, gestión de riesgos y frameworks como NIST. La ciberseguridad es un área que me apasiona y hacia donde quiero orientar mi carrera.",
       aboutAvailability: "Disponible para proyectos freelance and remote positions.",
       expYears: "Años de Exp.",
       projectsCount: "Proyectos",
@@ -130,7 +132,7 @@ export const portfolioData = {
   en: {
     personalInfo: {
       name: "Valentin",
-      role: "Software Developer · Web & Mobile · Automation",
+      role: "Software Developer · Web & Mobile · Cybersecurity",
       currentStatus: "2026 · Systems Analyst — graduating soon",
       description: "Software Developer from Villa Mercedes, Argentina. Three projects in production used by real clients — from WhatsApp bots to mobile inventory apps.",
       email: "valentin.nolasco123123@gmail.com", 
@@ -194,7 +196,8 @@ export const portfolioData = {
       { name: "Flutter / Dart / Android Studio", subtitle: "Mobile Development" },
       { name: "PostgreSQL / SQL", subtitle: "Database" },
       { name: "Docker / Cloudflare / Github Actions", subtitle: "Deployment" },
-      { name: "WhatsApp API / LLM", subtitle: "Automation" }
+      { name: "WhatsApp API / LLM", subtitle: "Automation" },
+      { name: "SIEM (Splunk, Chronicle) / Wireshark / Suricata / tcpdump / Linux CLI", subtitle: "Cybersecurity" }
     ],
     nav: {
       projects: "Projects",
@@ -219,6 +222,7 @@ export const portfolioData = {
       aboutTitle: "About Me",
       aboutP1: "I am a Software Developer from Villa Mercedes, Argentina. I am about to graduate as a Systems Analyst and finishing my degree as a Systems Engineer. I specialize in building products that solve real problems: appointment systems, WhatsApp automations, and mobile applications that people use every day.",
       aboutP2: "Some of my projects are in production and used by real clients. That taught me more than any course — how to make decisions under pressure, prioritize what works, and iterate fast when something fails.",
+      aboutP3: "I'm currently completing Google's Professional Cybersecurity Certificate, where I've gained hands-on experience with SIEM tools (Splunk, Chronicle), network traffic analysis using Wireshark and tcpdump, intrusion detection with Suricata, risk management, and frameworks like NIST. Cybersecurity is an area I'm deeply passionate about and where I want to steer my career.",
       aboutAvailability: "Available for freelance projects and remote positions.",
       expYears: "Years Exp.",
       projectsCount: "Projects",

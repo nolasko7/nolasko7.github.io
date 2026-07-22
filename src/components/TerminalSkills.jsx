@@ -154,6 +154,31 @@ client.on('message', async msg => {
 
 client.initialize();
 console.log('Automation bot ready and listening.');`;
+      case 'Cybersecurity':
+        return `#!/bin/bash
+# Google Cybersecurity Certificate — Lab Script
+# Tools: ${techList.join(', ')}
+
+echo "[*] Starting network traffic capture..."
+tcpdump -i eth0 -nn -c 100 -w capture.pcap
+
+echo "[*] Analyzing packets with Wireshark filters..."
+tshark -r capture.pcap -Y "http.request || dns" \\
+  -T fields -e ip.src -e ip.dst -e http.host
+
+echo "[*] Running Suricata IDS rules..."
+suricata -c /etc/suricata/suricata.yaml \\
+  -r capture.pcap -l /var/log/suricata/
+
+echo "[*] Checking SIEM alerts (Splunk/Chronicle)..."
+splunk search "index=main sourcetype=syslog \\
+  | stats count by src_ip, dest_ip, action \\
+  | where action=\\"blocked\\" \\
+  | sort -count"
+
+echo "[*] NIST CSF Assessment: IDENTIFY > PROTECT"
+echo "    > DETECT > RESPOND > RECOVER"
+echo "[OK] Threat analysis complete. 0 critical alerts."`;
       default:
         return `// Technologies loaded:
 const tools = [
@@ -218,6 +243,7 @@ tools.forEach(tool => {
       'Database':           { color: '#f29111', label: 'sql' },
       'Deployment':         { color: '#e34f26', label: 'yml' },
       'Automation':         { color: '#25d366', label: 'bot' },
+      'Cybersecurity':      { color: '#ff4444', label: 'sh' },
     };
     const icon = icons[subtitle] || { color: '#888', label: 'js' };
     return (
@@ -336,7 +362,7 @@ tools.forEach(tool => {
             <svg className="w-4 h-4 text-[#519aba]" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
             </svg>
-            {activeSkill.subtitle.toLowerCase().replace(' ', '_')}.{activeSkill.subtitle === 'Database' ? 'sql' : activeSkill.subtitle === 'Deployment' ? 'yml' : activeSkill.subtitle === 'Mobile Development' ? 'dart' : 'js'}
+            {activeSkill.subtitle.toLowerCase().replace(' ', '_')}.{activeSkill.subtitle === 'Database' ? 'sql' : activeSkill.subtitle === 'Deployment' ? 'yml' : activeSkill.subtitle === 'Mobile Development' ? 'dart' : activeSkill.subtitle === 'Cybersecurity' ? 'sh' : 'js'}
             <button className="ml-2 w-4 h-4 rounded hover:bg-[#333333] flex items-center justify-center text-stone-400 hover:text-[#ffffff] transition-colors">×</button>
           </div>
           <button onClick={handleCopy} className="mr-4 text-[#858585] hover:text-[#ffffff] transition-colors flex items-center gap-1.5 text-[11px] uppercase tracking-wider">
