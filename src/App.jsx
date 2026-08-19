@@ -453,7 +453,7 @@ function App() {
           <div className="grid grid-cols-2 gap-8 border-l border-stone-200 pl-8 md:pl-16">
             <div>
               <span className="block text-4xl font-serif text-green-800 mb-2">
-                <AnimatedCounter end={2} suffix="+" duration={2000} />
+                <AnimatedCounter end={3} suffix="+" duration={2000} />
               </span>
               <span className="text-sm font-light uppercase tracking-widest text-warm-gray">{sections.expYears}</span>
             </div>
