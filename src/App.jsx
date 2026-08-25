@@ -12,13 +12,14 @@ import GlitchText from './components/GlitchText';
 import TerminalText from './components/TerminalText';
 import ContactForm from './components/ContactForm';
 import ProjectModal from './components/ProjectModal';
+import CertificationModal from './components/CertificationModal';
 import TerminalSkills from './components/TerminalSkills';
 import SectionHeader from './components/SectionHeader';
 
 function App() {
   useScrollReveal();
   const [language, setLanguage] = useState('es');
-  const { personalInfo, projects, skills, nav, hero, sections } = portfolioData[language];
+  const { personalInfo, projects, skills, certification, nav, hero, sections } = portfolioData[language];
   const [isScrolled, setIsScrolled] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -29,6 +30,7 @@ function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
   const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
+  const [isCertModalOpen, setIsCertModalOpen] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
 
   const lenisRef = useRef(null);
@@ -422,6 +424,52 @@ function App() {
         <TerminalSkills skills={skills} language={language} />
       </section>
 
+      {/* Certification Section */}
+      <section className="py-12 sm:py-24 px-6 max-w-[900px] mx-auto">
+        <SectionHeader number="02.5" title={language === 'es' ? 'Certificación' : 'Certification'} />
+        <SpotlightCard
+          as="div"
+          onClick={() => setIsCertModalOpen(true)}
+          className="reveal block bg-white rounded-2xl shadow-sm hover:shadow-xl hover-lift transition-all duration-500 overflow-hidden cursor-pointer group"
+          innerClassName="w-full h-full"
+        >
+          <div className="flex flex-col md:flex-row">
+            {/* Badge Image */}
+            <div className="md:w-2/5 p-6 md:p-8 flex items-center justify-center bg-gradient-to-br from-stone-50 to-stone-100 dark:from-stone-900/50 dark:to-stone-800/30 border-b md:border-b-0 md:border-r border-stone-200/50 dark:border-stone-700/50">
+              <div className="relative group">
+                <div className="absolute -inset-4 bg-gradient-to-r from-green-500/20 via-emerald-500/20 to-teal-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+                <img 
+                  src={certification.image} 
+                  alt={certification.title} 
+                  className="relative w-full max-w-[280px] rounded-xl shadow-lg group-hover:shadow-2xl transition-shadow duration-500"
+                />
+              </div>
+            </div>
+            {/* Cert Info */}
+            <div className="md:w-3/5 p-6 md:p-8 flex flex-col justify-center">
+              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-50 dark:bg-green-500/10 border border-green-200 dark:border-green-500/20 text-xs font-mono text-green-800 dark:text-green-500 mb-4 w-fit">
+                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" /></svg>
+                {language === 'es' ? 'Completado' : 'Completed'}
+              </div>
+              <h3 className="text-2xl md:text-3xl font-serif text-dark mb-2">{certification.title}</h3>
+              <p className="text-sm font-mono text-warm-gray mb-1">{certification.issuer}</p>
+              <p className="text-xs font-mono text-stone-400 mb-4">{certification.date}</p>
+              <p className="font-light leading-relaxed text-warm-gray mb-6">{certification.description}</p>
+              <a 
+                href={certification.verifyUrl} 
+                target="_blank" 
+                rel="noreferrer"
+                className="group inline-flex items-center gap-2 px-5 py-2.5 bg-green-50 dark:bg-green-500/10 border border-green-200 dark:border-green-500/30 rounded-full text-sm font-medium text-green-800 dark:text-green-500 hover:bg-green-100 dark:hover:bg-green-500/20 transition-colors w-fit"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
+                {language === 'es' ? 'Verificar en Credly' : 'Verify on Credly'}
+                <svg className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
+              </a>
+            </div>
+          </div>
+        </SpotlightCard>
+      </section>
+
       {/* Sobre Mí Section */}
       <section id="sobre-mi" className="py-12 sm:py-24 px-6 max-w-[900px] mx-auto reveal">
         <SectionHeader number="03" title={sections.aboutTitle} />
@@ -437,10 +485,10 @@ function App() {
             <p className="font-light leading-relaxed">
               {sections.aboutP2}
             </p>
-            <div className="relative border border-red-200/60 dark:border-red-500/20 rounded-xl p-4 bg-red-50/40 dark:bg-red-500/5">
-              <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-red-100 dark:bg-red-500/15 border border-red-200 dark:border-red-500/30 text-[10px] font-mono text-red-700 dark:text-red-400 uppercase tracking-widest mb-3">
+            <div className="relative border border-green-200/60 dark:border-green-500/20 rounded-xl p-4 bg-green-50/40 dark:bg-green-500/5">
+              <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-green-100 dark:bg-green-500/15 border border-green-200 dark:border-green-500/30 text-[10px] font-mono text-green-700 dark:text-green-400 uppercase tracking-widest mb-3">
                 <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
-                {language === 'es' ? 'Ciberseguridad' : 'Cybersecurity'}
+                {language === 'es' ? 'Ciberseguridad ✓' : 'Cybersecurity ✓'}
               </div>
               <p className="font-light leading-relaxed text-sm">
                 {sections.aboutP3}
@@ -539,6 +587,14 @@ function App() {
         project={selectedProject} 
         isOpen={isProjectModalOpen} 
         onClose={() => setIsProjectModalOpen(false)} 
+        language={language}
+      />
+
+      {/* Certification Modal */}
+      <CertificationModal 
+        certification={certification} 
+        isOpen={isCertModalOpen} 
+        onClose={() => setIsCertModalOpen(false)} 
         language={language}
       />
 

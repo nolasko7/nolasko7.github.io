@@ -179,6 +179,64 @@ splunk search "index=main sourcetype=syslog \\
 echo "[*] NIST CSF Assessment: IDENTIFY > PROTECT"
 echo "    > DETECT > RESPOND > RECOVER"
 echo "[OK] Threat analysis complete. 0 critical alerts."`;
+      case 'Security Scripting':
+        return `#!/usr/bin/env python3
+# Security Automation Toolkit
+# Stack: ${techList.join(', ')}
+
+import subprocess
+import sqlite3
+import json
+from datetime import datetime
+
+def scan_open_ports(target):
+    """Automated port scan & log to DB"""
+    result = subprocess.run(
+        ['nmap', '-sV', target],
+        capture_output=True, text=True
+    )
+    return parse_nmap_output(result.stdout)
+
+def log_to_database(findings):
+    conn = sqlite3.connect('security_audit.db')
+    cursor = conn.cursor()
+    cursor.execute('''
+        INSERT INTO scans (timestamp, findings)
+        VALUES (?, ?)
+    ''', (datetime.now().isoformat(), json.dumps(findings)))
+    conn.commit()
+    conn.close()
+
+if __name__ == '__main__':
+    findings = scan_open_ports('192.168.1.0/24')
+    log_to_database(findings)
+    print('[OK] Security scan completed & logged.')`;
+      case 'Networking':
+        return `# Network Analysis & Security Config
+# Stack: ${techList.join(', ')}
+
+# --- TCP/IP Traffic Analysis ---
+tcpdump -i eth0 -nn -c 50 \\
+  'tcp port 443 or tcp port 80' \\
+  -w /tmp/traffic_capture.pcap
+
+# --- Analyze captured traffic ---
+tshark -r /tmp/traffic_capture.pcap \\
+  -T fields \\
+  -e ip.src -e ip.dst \\
+  -e tcp.dstport -e http.host \\
+  -e tls.handshake.extensions_server_name
+
+# --- Firewall rules (iptables) ---
+iptables -A INPUT -p tcp --dport 22 -j ACCEPT
+iptables -A INPUT -p tcp --dport 443 -j ACCEPT
+iptables -A INPUT -p tcp --dport 80 -j ACCEPT
+iptables -A INPUT -j DROP
+
+echo "[OK] Perimeter security configured."
+echo "[OK] Traffic analysis complete."
+echo "[OK] Network monitoring active."`;
+
       default:
         return `// Technologies loaded:
 const tools = [
@@ -244,6 +302,8 @@ tools.forEach(tool => {
       'Deployment':         { color: '#e34f26', label: 'yml' },
       'Automation':         { color: '#25d366', label: 'bot' },
       'Cybersecurity':      { color: '#ff4444', label: 'sh' },
+      'Security Scripting':  { color: '#3572A5', label: 'py' },
+      'Networking':          { color: '#f5a623', label: 'sh' },
     };
     const icon = icons[subtitle] || { color: '#888', label: 'js' };
     return (
@@ -362,7 +422,7 @@ tools.forEach(tool => {
             <svg className="w-4 h-4 text-[#519aba]" viewBox="0 0 24 24" fill="currentColor">
               <path d="M12 2C6.477 2 2 6.477 2 12c0 4.42 2.865 8.166 6.839 9.489.5.092.682-.217.682-.482 0-.237-.008-.868-.013-1.703-2.782.605-3.369-1.343-3.369-1.343-.454-1.158-1.11-1.466-1.11-1.466-.908-.62.069-.608.069-.608 1.003.07 1.531 1.03 1.531 1.03.892 1.53 2.341 1.088 2.91.832.092-.647.35-1.088.636-1.338-2.22-.253-4.555-1.11-4.555-4.943 0-1.091.39-1.984 1.029-2.683-.103-.253-.446-1.27.098-2.647 0 0 .84-.269 2.75 1.025A9.564 9.564 0 0112 6.844c.85.004 1.705.115 2.504.337 1.909-1.294 2.747-1.025 2.747-1.025.546 1.377.203 2.394.1 2.647.64.699 1.028 1.592 1.028 2.683 0 3.842-2.339 4.687-4.566 4.935.359.309.678.919.678 1.852 0 1.336-.012 2.415-.012 2.743 0 .267.18.578.688.48C19.138 20.161 22 16.418 22 12c0-5.523-4.477-10-10-10z"/>
             </svg>
-            {activeSkill.subtitle.toLowerCase().replace(' ', '_')}.{activeSkill.subtitle === 'Database' ? 'sql' : activeSkill.subtitle === 'Deployment' ? 'yml' : activeSkill.subtitle === 'Mobile Development' ? 'dart' : activeSkill.subtitle === 'Cybersecurity' ? 'sh' : 'js'}
+            {activeSkill.subtitle.toLowerCase().replace(' ', '_')}.{activeSkill.subtitle === 'Database' ? 'sql' : activeSkill.subtitle === 'Deployment' ? 'yml' : activeSkill.subtitle === 'Mobile Development' ? 'dart' : activeSkill.subtitle === 'Cybersecurity' || activeSkill.subtitle === 'Networking' ? 'sh' : activeSkill.subtitle === 'Security Scripting' ? 'py' : 'js'}
             <button className="ml-2 w-4 h-4 rounded hover:bg-[#333333] flex items-center justify-center text-stone-400 hover:text-[#ffffff] transition-colors">×</button>
           </div>
           <button onClick={handleCopy} className="mr-4 text-[#858585] hover:text-[#ffffff] transition-colors flex items-center gap-1.5 text-[11px] uppercase tracking-wider">

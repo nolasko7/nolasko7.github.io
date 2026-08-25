@@ -21,6 +21,7 @@ import almacenImg2 from '../assets/Almacen2.png';
 import almacenImg3 from '../assets/Almacen3.png';
 
 import nasaCert from '../assets/CertificadoNASA.jpg';
+import googleCyberCert from '../assets/GoogleCybersecurityCert.png';
 import rainImg0 from '../assets/willitrain0.png';
 import rainImg1 from '../assets/willitrain1.png';
 
@@ -29,7 +30,7 @@ export const portfolioData = {
     personalInfo: {
       name: "Valentin",
       role: "Software Developer · Web & Mobile · Ciberseguridad",
-      currentStatus: "2026 · Próximo Analista en Sistemas",
+      currentStatus: "2026 · Próximo Analista en Sistemas · Google Cybersecurity Certified",
       description: "Software Developer de Villa Mercedes, Argentina. Tres proyectos en producción usados por clientes reales — desde bots de WhatsApp hasta apps móviles de gestión de stock.",
       email: "valentin.nolasco123123@gmail.com", 
       github: "https://github.com/nolasko7", 
@@ -93,8 +94,18 @@ export const portfolioData = {
       { name: "PostgreSQL / SQL", subtitle: "Database" },
       { name: "Docker / Cloudflare / Github Actions", subtitle: "Deployment" },
       { name: "WhatsApp API / LLM", subtitle: "Automation" },
-      { name: "SIEM (Splunk, Chronicle) / Wireshark / Suricata / tcpdump / Linux CLI", subtitle: "Cybersecurity" }
+      { name: "Herramientas SIEM / Monitoreo de Sistemas / Análisis de Logs / Detección y Mitigación de Amenazas / Respuesta ante Incidentes / Evaluación de Vulnerabilidades / Gestión de Riesgos / Seguridad de la Información / IDS", subtitle: "Cybersecurity" },
+      { name: "Linux / SQL / Python para Automatización de Seguridad", subtitle: "Security Scripting" },
+      { name: "TCP/IP / Protocolos de Red / Análisis de Tráfico / Seguridad Perimetral", subtitle: "Networking" }
     ],
+    certification: {
+      title: "Google Cybersecurity Professional Certificate (v.2)",
+      issuer: "Coursera · Google",
+      date: "Agosto 2026",
+      image: googleCyberCert,
+      verifyUrl: "https://www.credly.com/go/rEaI6RrH",
+      description: "Certificado profesional de 8 cursos que cubre fundamentos de ciberseguridad, gestión de riesgos, seguridad de redes, herramientas SIEM, detección de amenazas, scripting con Python y Linux, y respuesta ante incidentes según el framework NIST."
+    },
     nav: {
       projects: "Proyectos",
       skills: "Habilidades",
@@ -106,7 +117,7 @@ export const portfolioData = {
     },
     hero: {
       loaded: "",
-      availability: "Disponible para posiciones part-time o fulltime flexible",
+      availability: "Disponible para posiciones part-time, fulltime flexible y ciberseguridad junior",
       titleHighlight: ["producto", "en", "producción"],
       title: "Del problema real al producto en producción.",
       talkButton: "Hablemos de tu proyecto"
@@ -118,8 +129,8 @@ export const portfolioData = {
       aboutTitle: "Sobre Mí",
       aboutP1: "Soy desarrollador de software de Villa Mercedes, Argentina. Estoy por recibirme de Analista en Sistemas y terminando mi carrera como Ingeniero en Sistemas. Me especializo en construir productos que resuelven problemas reales: sistemas de turnos, automatizaciones con WhatsApp y aplicaciones móviles que la gente usa todos los días.",
       aboutP2: "Algunos de mis proyectos están en producción y los usan clientes reales. Eso me enseñó más que cualquier curso — a tomar decisiones bajo presión, a priorizar lo que funciona y a iterar rápido cuando algo falla.",
-      aboutP3: "Actualmente estoy completando el Certificado Profesional de Ciberseguridad de Google, donde profundicé en herramientas SIEM (Splunk, Chronicle), análisis de tráfico de red con Wireshark y tcpdump, detección de intrusiones con Suricata, gestión de riesgos y frameworks como NIST. La ciberseguridad es un área que me apasiona y hacia donde quiero orientar mi carrera.",
-      aboutAvailability: "Disponible para proyectos freelance and remote positions.",
+      aboutP3: "Completé el Certificado Profesional de Ciberseguridad de Google, donde profundicé en herramientas SIEM (Splunk, Chronicle), análisis de tráfico de red con Wireshark y tcpdump, detección de intrusiones con Suricata, gestión de riesgos y frameworks como NIST. La ciberseguridad es un área que me apasiona y hacia donde quiero orientar mi carrera.",
+      aboutAvailability: "Disponible para proyectos freelance, posiciones remotas y roles junior de ciberseguridad.",
       expYears: "Años de Exp.",
       projectsCount: "Proyectos",
       contactTitle: "¿Listo para empezar?",
@@ -133,7 +144,7 @@ export const portfolioData = {
     personalInfo: {
       name: "Valentin",
       role: "Software Developer · Web & Mobile · Cybersecurity",
-      currentStatus: "2026 · Systems Analyst — graduating soon",
+      currentStatus: "2026 · Systems Analyst — graduating soon · Google Cybersecurity Certified",
       description: "Software Developer from Villa Mercedes, Argentina. Three projects in production used by real clients — from WhatsApp bots to mobile inventory apps.",
       email: "valentin.nolasco123123@gmail.com", 
       github: "https://github.com/nolasko7", 
@@ -197,8 +208,18 @@ export const portfolioData = {
       { name: "PostgreSQL / SQL", subtitle: "Database" },
       { name: "Docker / Cloudflare / Github Actions", subtitle: "Deployment" },
       { name: "WhatsApp API / LLM", subtitle: "Automation" },
-      { name: "SIEM (Splunk, Chronicle) / Wireshark / Suricata / tcpdump / Linux CLI", subtitle: "Cybersecurity" }
+      { name: "SIEM Tools / System Monitoring / Log Analysis / Threat Detection & Mitigation / Incident Response / Vulnerability Assessment / Risk Management / Information Security / IDS", subtitle: "Cybersecurity" },
+      { name: "Linux / SQL / Python for Security Automation", subtitle: "Security Scripting" },
+      { name: "TCP/IP / Network Protocols / Traffic Analysis / Perimeter Security", subtitle: "Networking" }
     ],
+    certification: {
+      title: "Google Cybersecurity Professional Certificate (v.2)",
+      issuer: "Coursera · Google",
+      date: "August 2026",
+      image: googleCyberCert,
+      verifyUrl: "https://www.credly.com/go/rEaI6RrH",
+      description: "An 8-course professional certificate covering cybersecurity fundamentals, risk management, network security, SIEM tools, threat detection, Python and Linux scripting, and incident response following the NIST framework."
+    },
     nav: {
       projects: "Projects",
       skills: "Skills",
@@ -210,7 +231,7 @@ export const portfolioData = {
     },
     hero: {
       loaded: "loaded.",
-      availability: "Available for flexible part-time or full-time positions",
+      availability: "Available for part-time, flexible full-time & junior cybersecurity positions",
       titleHighlight: ["product", "in", "production"],
       title: "From real problem to product in production.",
       talkButton: "Let's talk about your project"
@@ -222,8 +243,8 @@ export const portfolioData = {
       aboutTitle: "About Me",
       aboutP1: "I am a Software Developer from Villa Mercedes, Argentina. I am about to graduate as a Systems Analyst and finishing my degree as a Systems Engineer. I specialize in building products that solve real problems: appointment systems, WhatsApp automations, and mobile applications that people use every day.",
       aboutP2: "Some of my projects are in production and used by real clients. That taught me more than any course — how to make decisions under pressure, prioritize what works, and iterate fast when something fails.",
-      aboutP3: "I'm currently completing Google's Professional Cybersecurity Certificate, where I've gained hands-on experience with SIEM tools (Splunk, Chronicle), network traffic analysis using Wireshark and tcpdump, intrusion detection with Suricata, risk management, and frameworks like NIST. Cybersecurity is an area I'm deeply passionate about and where I want to steer my career.",
-      aboutAvailability: "Available for freelance projects and remote positions.",
+      aboutP3: "I completed Google's Professional Cybersecurity Certificate, gaining hands-on experience with SIEM tools (Splunk, Chronicle), network traffic analysis using Wireshark and tcpdump, intrusion detection with Suricata, risk management, and frameworks like NIST. Cybersecurity is an area I'm deeply passionate about and where I want to steer my career.",
+      aboutAvailability: "Available for freelance projects, remote positions, and junior cybersecurity roles.",
       expYears: "Years Exp.",
       projectsCount: "Projects",
       contactTitle: "Ready to start?",
