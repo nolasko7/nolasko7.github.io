@@ -1,6 +1,52 @@
-import React, { useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 
 const CertificationModal = ({ certification, isOpen, onClose, language }) => {
+  const [currentImageIndex, setCurrentImageIndex] = useState(0);
+  const [touchStart, setTouchStart] = useState(null);
+  const [touchEnd, setTouchEnd] = useState(null);
+
+  const minSwipeDistance = 50;
+
+  const onTouchStart = (e) => {
+    setTouchEnd(null);
+    setTouchStart(e.targetTouches[0].clientX);
+  };
+
+  const onTouchMove = (e) => setTouchEnd(e.targetTouches[0].clientX);
+
+  const onTouchEnd = () => {
+    if (!touchStart || !touchEnd) return;
+    const distance = touchStart - touchEnd;
+    const isLeftSwipe = distance > minSwipeDistance;
+    const isRightSwipe = distance < -minSwipeDistance;
+    
+    if (isLeftSwipe) {
+      handleNext();
+    } else if (isRightSwipe) {
+      handlePrev();
+    }
+  };
+
+  const images = certification ? (certification.images || [certification.image]) : [];
+
+  const handleNext = () => {
+    setCurrentImageIndex((prev) => (prev === images.length - 1 ? 0 : prev + 1));
+  };
+
+  const handlePrev = () => {
+    setCurrentImageIndex((prev) => (prev === 0 ? images.length - 1 : prev - 1));
+  };
+
+  const handleDotClick = (index) => {
+    setCurrentImageIndex(index);
+  };
+
+  // Reset index when modal opens
+  useEffect(() => {
+    if (isOpen) {
+      setCurrentImageIndex(0);
+    }
+  }, [isOpen]);
 
   // Lock body scroll when modal is open
   useEffect(() => {
@@ -46,14 +92,55 @@ const CertificationModal = ({ certification, isOpen, onClose, language }) => {
         </div>
 
         {/* Body Container (Scrollable) */}
-        <div className="flex-1 overflow-y-auto max-h-[calc(90vh-100px)]">
+        <div className="flex-1 overflow-y-auto max-h-[calc(90vh-100px)]" data-lenis-prevent>
           {/* Certificate Image — Full Size */}
-          <div className="relative w-full bg-gradient-to-br from-stone-100 to-stone-200 dark:from-stone-900 dark:to-stone-800 flex items-center justify-center p-8 sm:p-12">
-            <img 
-              src={certification.image} 
-              alt={certification.title}
-              className="w-full max-w-[600px] rounded-xl shadow-2xl"
-            />
+          <div 
+            className="relative w-full bg-gradient-to-br from-stone-100 to-stone-200 dark:from-stone-900 dark:to-stone-800 flex flex-col items-center justify-center p-8 sm:p-12 group/modal-carousel"
+            onTouchStart={onTouchStart}
+            onTouchMove={onTouchMove}
+            onTouchEnd={onTouchEnd}
+          >
+            <div className="relative w-full max-w-[600px] aspect-[4/3] flex items-center justify-center">
+              <img 
+                src={images[currentImageIndex]} 
+                alt={`${certification.title} view ${currentImageIndex + 1}`}
+                className="max-w-full max-h-full object-contain rounded-xl shadow-2xl transition-all duration-300"
+              />
+              
+              {/* Carousel Controls */}
+              {images.length > 1 && (
+                <>
+                  <button 
+                    onClick={handlePrev}
+                    className="absolute left-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full bg-stone-50/80 dark:bg-black/50 backdrop-blur-md text-dark dark:text-white border border-white/20 hover:bg-white dark:hover:bg-green-500/20 hover:text-green-800 dark:hover:text-green-500 hover:scale-110 transition-all opacity-0 group-hover/modal-carousel:opacity-100 focus:opacity-100"
+                    aria-label="Previous image"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" /></svg>
+                  </button>
+                  <button 
+                    onClick={handleNext}
+                    className="absolute right-4 top-1/2 -translate-y-1/2 w-10 h-10 flex items-center justify-center rounded-full bg-stone-50/80 dark:bg-black/50 backdrop-blur-md text-dark dark:text-white border border-white/20 hover:bg-white dark:hover:bg-green-500/20 hover:text-green-800 dark:hover:text-green-500 hover:scale-110 transition-all opacity-0 group-hover/modal-carousel:opacity-100 focus:opacity-100"
+                    aria-label="Next image"
+                  >
+                    <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" /></svg>
+                  </button>
+                </>
+              )}
+            </div>
+
+            {/* Dots */}
+            {images.length > 1 && (
+              <div className="flex gap-2 mt-6">
+                {images.map((_, idx) => (
+                  <button
+                    key={idx}
+                    onClick={() => handleDotClick(idx)}
+                    className={`w-2 h-2 rounded-full transition-all duration-300 ${currentImageIndex === idx ? 'w-6 bg-green-600 dark:bg-green-500' : 'bg-stone-400 dark:bg-stone-500 hover:bg-stone-600 dark:hover:bg-stone-300'}`}
+                    aria-label={`Go to slide ${idx + 1}`}
+                  />
+                ))}
+              </div>
+            )}
           </div>
 
           {/* Details Section */}

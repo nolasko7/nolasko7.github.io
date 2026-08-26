@@ -100,7 +100,7 @@ const ProjectModal = ({ project, isOpen, onClose, language }) => {
         </div>
 
         {/* Body Container (Scrollable) */}
-        <div className="flex-1 overflow-y-auto max-h-[calc(90vh-100px)]">
+        <div className="flex-1 overflow-y-auto max-h-[calc(90vh-100px)]" data-lenis-prevent>
           {/* Image Carousel */}
           <div 
             className="relative w-full aspect-video bg-stone-200 dark:bg-stone-900 group"

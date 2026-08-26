@@ -22,6 +22,7 @@ import almacenImg3 from '../assets/Almacen3.png';
 
 import nasaCert from '../assets/CertificadoNASA.jpg';
 import googleCyberCert from '../assets/GoogleCybersecurityCert.png';
+import googleCyberCertNew from '../assets/GoogleCybersecurityCertNew.png';
 import rainImg0 from '../assets/willitrain0.png';
 import rainImg1 from '../assets/willitrain1.png';
 
@@ -102,7 +103,8 @@ export const portfolioData = {
       title: "Google Cybersecurity Professional Certificate (v.2)",
       issuer: "Coursera · Google",
       date: "Agosto 2026",
-      image: googleCyberCert,
+      image: googleCyberCertNew,
+      images: [googleCyberCertNew, googleCyberCert],
       verifyUrl: "https://www.credly.com/go/rEaI6RrH",
       description: "Certificado profesional de 8 cursos que cubre fundamentos de ciberseguridad, gestión de riesgos, seguridad de redes, herramientas SIEM, detección de amenazas, scripting con Python y Linux, y respuesta ante incidentes según el framework NIST."
     },
@@ -216,7 +218,8 @@ export const portfolioData = {
       title: "Google Cybersecurity Professional Certificate (v.2)",
       issuer: "Coursera · Google",
       date: "August 2026",
-      image: googleCyberCert,
+      image: googleCyberCertNew,
+      images: [googleCyberCertNew, googleCyberCert],
       verifyUrl: "https://www.credly.com/go/rEaI6RrH",
       description: "An 8-course professional certificate covering cybersecurity fundamentals, risk management, network security, SIEM tools, threat detection, Python and Linux scripting, and incident response following the NIST framework."
     },

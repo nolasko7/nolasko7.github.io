@@ -31,6 +31,7 @@ function App() {
   const [selectedProject, setSelectedProject] = useState(null);
   const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
   const [isCertModalOpen, setIsCertModalOpen] = useState(false);
+  const [currentCertImgIndex, setCurrentCertImgIndex] = useState(0);
   const [showBackToTop, setShowBackToTop] = useState(false);
 
   const lenisRef = useRef(null);
@@ -59,6 +60,17 @@ function App() {
       lenisRef.current.destroy();
     };
   }, []);
+
+  // Pause/Resume Lenis when modals are open/closed
+  useEffect(() => {
+    if (isProjectModalOpen || isCertModalOpen) {
+      lenisRef.current?.stop();
+      document.body.classList.add('lenis-stopped');
+    } else {
+      lenisRef.current?.start();
+      document.body.classList.remove('lenis-stopped');
+    }
+  }, [isProjectModalOpen, isCertModalOpen]);
 
   const scrollTo = (target) => {
     lenisRef.current?.scrollTo(target, {
@@ -435,15 +447,58 @@ function App() {
         >
           <div className="flex flex-col md:flex-row">
             {/* Badge Image */}
-            <div className="md:w-2/5 p-6 md:p-8 flex items-center justify-center bg-gradient-to-br from-stone-50 to-stone-100 dark:from-stone-900/50 dark:to-stone-800/30 border-b md:border-b-0 md:border-r border-stone-200/50 dark:border-stone-700/50">
-              <div className="relative group">
-                <div className="absolute -inset-4 bg-gradient-to-r from-green-500/20 via-emerald-500/20 to-teal-500/20 rounded-2xl blur-xl opacity-0 group-hover:opacity-100 transition-opacity duration-700"></div>
+            <div className="md:w-2/5 p-6 md:p-8 flex flex-col items-center justify-center bg-gradient-to-br from-stone-50 to-stone-100 dark:from-stone-900/50 dark:to-stone-800/30 border-b md:border-b-0 md:border-r border-stone-200/50 dark:border-stone-700/50 relative group/carousel">
+              <div className="relative w-full max-w-[280px] aspect-[4/3] flex items-center justify-center">
+                <div className="absolute -inset-4 bg-gradient-to-r from-green-500/20 via-emerald-500/20 to-teal-500/20 rounded-2xl blur-xl opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
                 <img 
-                  src={certification.image} 
+                  src={certification.images ? certification.images[currentCertImgIndex] : certification.image} 
                   alt={certification.title} 
-                  className="relative w-full max-w-[280px] rounded-xl shadow-lg group-hover:shadow-2xl transition-shadow duration-500"
+                  className="relative max-w-full max-h-full object-contain rounded-xl shadow-lg group-hover/carousel:shadow-2xl transition-all duration-500"
                 />
+                
+                {/* Arrow Controls */}
+                {certification.images && certification.images.length > 1 && (
+                  <>
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setCurrentCertImgIndex((prev) => (prev === 0 ? certification.images.length - 1 : prev - 1));
+                      }}
+                      className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full bg-white/90 dark:bg-black/70 backdrop-blur-sm text-dark dark:text-white border border-stone-200/50 dark:border-stone-800/50 shadow-md hover:bg-white dark:hover:bg-green-500/20 hover:text-green-800 dark:hover:text-green-500 transition-all opacity-0 group-hover/carousel:opacity-100 focus:opacity-100 z-10"
+                      aria-label="Previous image"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" /></svg>
+                    </button>
+                    <button 
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setCurrentCertImgIndex((prev) => (prev === certification.images.length - 1 ? 0 : prev + 1));
+                      }}
+                      className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full bg-white/90 dark:bg-black/70 backdrop-blur-sm text-dark dark:text-white border border-stone-200/50 dark:border-stone-800/50 shadow-md hover:bg-white dark:hover:bg-green-500/20 hover:text-green-800 dark:hover:text-green-500 transition-all opacity-0 group-hover/carousel:opacity-100 focus:opacity-100 z-10"
+                      aria-label="Next image"
+                    >
+                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" /></svg>
+                    </button>
+                  </>
+                )}
               </div>
+              
+              {/* Dots */}
+              {certification.images && certification.images.length > 1 && (
+                <div className="flex gap-1.5 mt-4 z-10">
+                  {certification.images.map((_, idx) => (
+                    <button
+                      key={idx}
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        setCurrentCertImgIndex(idx);
+                      }}
+                      className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${currentCertImgIndex === idx ? 'w-4 bg-green-600 dark:bg-green-500' : 'bg-stone-300 dark:bg-stone-600 hover:bg-stone-400'}`}
+                      aria-label={`Go to slide ${idx + 1}`}
+                    />
+                  ))}
+                </div>
+              )}
             </div>
             {/* Cert Info */}
             <div className="md:w-3/5 p-6 md:p-8 flex flex-col justify-center">
