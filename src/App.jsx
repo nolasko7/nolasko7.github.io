@@ -15,6 +15,7 @@ import ProjectModal from './components/ProjectModal';
 import CertificationModal from './components/CertificationModal';
 import TerminalSkills from './components/TerminalSkills';
 import SectionHeader from './components/SectionHeader';
+import CvDropdown from './components/CvDropdown';
 
 function App() {
   useScrollReveal();
@@ -23,9 +24,9 @@ function App() {
   const [isScrolled, setIsScrolled] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(() => {
     if (typeof window !== 'undefined') {
-      return localStorage.theme === 'dark' || (!('theme' in localStorage) && window.matchMedia('(prefers-color-scheme: dark)').matches);
+      return localStorage.theme === 'dark' || (!('theme' in localStorage) && true);
     }
-    return false;
+    return true;
   });
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
@@ -33,6 +34,7 @@ function App() {
   const [isCertModalOpen, setIsCertModalOpen] = useState(false);
   const [currentCertImgIndex, setCurrentCertImgIndex] = useState(0);
   const [showBackToTop, setShowBackToTop] = useState(false);
+  const [cvDropdownContext, setCvDropdownContext] = useState(null); // 'hero' | 'mobile' | null
 
   const lenisRef = useRef(null);
 
@@ -274,10 +276,21 @@ function App() {
 
           {/* Footer del Menu (Redes y CV) */}
           <div className="p-8 border-t border-stone-200/50 dark:border-stone-800/50 bg-stone-50/50 dark:bg-[#141410]/50 backdrop-blur-md flex flex-col gap-6 relative z-10">
-            <a href={language === 'es' ? personalInfo.cvUrlEs : personalInfo.cvUrlEn} download className="w-full flex items-center justify-center gap-2 bg-dark dark:bg-green-500 text-[#f7f5f0] dark:text-[#141410] py-4 rounded-xl font-mono text-sm tracking-widest uppercase transition-colors hover:bg-green-800 dark:hover:bg-green-400 shadow-[0_0_15px_rgba(34,197,94,0.3)] dark:shadow-[0_0_15px_rgba(34,197,94,0.1)]">
-              <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
-              {personalInfo.downloadCvText}
-            </a>
+            <div className="relative w-full">
+              <button
+                onClick={() => setCvDropdownContext(ctx => ctx === 'mobile' ? null : 'mobile')}
+                className="w-full flex items-center justify-center gap-2 bg-dark dark:bg-green-500 text-[#f7f5f0] dark:text-[#141410] py-4 rounded-xl font-mono text-sm tracking-widest uppercase transition-colors hover:bg-green-800 dark:hover:bg-green-400 shadow-[0_0_15px_rgba(34,197,94,0.3)] dark:shadow-[0_0_15px_rgba(34,197,94,0.1)]"
+              >
+                <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M4 16v1a3 3 0 003 3h10a3 3 0 003-3v-1m-4-4l-4 4m0 0l-4-4m4 4V4" /></svg>
+                {personalInfo.downloadCvText}
+              </button>
+              <CvDropdown
+                personalInfo={personalInfo}
+                isOpen={cvDropdownContext === 'mobile'}
+                onClose={() => setCvDropdownContext(null)}
+                position="top"
+              />
+            </div>
             
             <div className="flex justify-center gap-6">
               <a href={`mailto:${personalInfo.email}`} onClick={() => setIsMobileMenuOpen(false)} className="w-12 h-12 flex items-center justify-center rounded-lg border border-stone-200/50 dark:border-stone-800/50 bg-stone-100/30 dark:bg-stone-800/30 text-stone-600 dark:text-stone-400 hover:text-green-800 dark:hover:text-green-500 hover:border-green-500/50 transition-all">
@@ -298,7 +311,7 @@ function App() {
       </nav>
 
       {/* Hero Section */}
-      <section className="pt-24 sm:pt-40 pb-20 px-6 max-w-[900px] mx-auto min-h-[80vh] flex flex-col justify-center reveal">
+      <section className="relative z-10 pt-24 sm:pt-40 pb-20 px-6 max-w-[900px] mx-auto min-h-[80vh] flex flex-col justify-center reveal">
         {/* Avatar */}
         <div className="flex items-center gap-4 mb-6">
           <div className="relative">
@@ -336,16 +349,23 @@ function App() {
             <GlitchText text={hero.talkButton} />
           </a>
           <div className="flex flex-wrap gap-3">
-            <a
-              href={language === 'es' ? personalInfo.cvUrlEs : personalInfo.cvUrlEn}
-              download
-              className="inline-flex items-center justify-center border border-stone-200 text-dark px-6 py-4 rounded-full hover:bg-stone-100 hover:scale-105 active:scale-95 transition-all duration-300 gap-2 text-sm md:text-base"
-            >
-              <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M7.5 12L12 16.5m0 0L16.5 12M12 16.5V3" />
-              </svg>
-              {personalInfo.cvButtonText}
-            </a>
+            <div className="relative">
+              <button
+                onClick={() => setCvDropdownContext(ctx => ctx === 'hero' ? null : 'hero')}
+                className="inline-flex items-center justify-center border border-stone-200 text-dark px-6 py-4 rounded-full hover:bg-stone-100 hover:scale-105 active:scale-95 transition-all duration-300 gap-2 text-sm md:text-base"
+              >
+                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M3 16.5v2.25A2.25 2.25 0 005.25 21h13.5A2.25 2.25 0 0021 18.75V16.5M7.5 12L12 16.5m0 0L16.5 12M12 16.5V3" />
+                </svg>
+                {personalInfo.cvButtonText}
+              </button>
+              <CvDropdown
+                personalInfo={personalInfo}
+                isOpen={cvDropdownContext === 'hero'}
+                onClose={() => setCvDropdownContext(null)}
+                position="bottom"
+              />
+            </div>
           </div>
         </div>
       </section>

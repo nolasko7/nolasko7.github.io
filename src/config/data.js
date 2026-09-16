@@ -37,10 +37,13 @@ export const portfolioData = {
       github: "https://github.com/nolasko7", 
       linkedin: "https://www.linkedin.com/in/valentin-nolasco-987249374/", 
       whatsapp: "https://wa.me/5492657359495",
-      cvUrlEs: "/CV ESP.pdf",
-      cvUrlEn: "/CV EN.pdf",
+      cvDeveloperUrl: "/Valentin_Nolasco_CV_Developer_ES.pdf",
+      cvCybersecurityUrl: "/Valentin_Nolasco_CV_Ciberseguridad_ES.pdf",
+      cvDeveloperLabel: "Desarrollador",
+      cvCybersecurityLabel: "Ciberseguridad",
       downloadCvText: "Descargar_CV",
-      cvButtonText: "CV"
+      cvButtonText: "CV",
+      cvSelectTitle: "Seleccionar CV"
     },
     projects: [
       {
@@ -152,10 +155,13 @@ export const portfolioData = {
       github: "https://github.com/nolasko7", 
       linkedin: "https://www.linkedin.com/in/valentin-nolasco-987249374/", 
       whatsapp: "https://wa.me/5492657359495",
-      cvUrlEs: "/CV ESP.pdf",
-      cvUrlEn: "/CV EN.pdf",
+      cvDeveloperUrl: "/Valentin_Nolasco_CV_Developer_EN.pdf",
+      cvCybersecurityUrl: "/Valentin_Nolasco_CV_Cybersecurity_EN.pdf",
+      cvDeveloperLabel: "Developer",
+      cvCybersecurityLabel: "Cybersecurity",
       downloadCvText: "Download_CV",
-      cvButtonText: "CV"
+      cvButtonText: "CV",
+      cvSelectTitle: "Select CV"
     },
     projects: [
       {
