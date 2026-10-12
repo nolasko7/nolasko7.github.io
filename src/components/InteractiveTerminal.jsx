@@ -154,6 +154,8 @@ const InteractiveTerminal = ({ isOpen, onClose, data, language, setLanguage, isD
         if (arg !== 'hire-me') { print(`sudo: ${arg || '?'}: command not found`, 'err'); break; }
         t.hire.forEach((l) => print(l));
         setTimeout(() => goTo('#contacto'), 1200);
+        // Big wave across the background network once the terminal closes
+        setTimeout(() => window.dispatchEvent(new CustomEvent('network:burst', { detail: { type: 'wave' } })), 1400);
         break;
       case 'rm':
         print(t.rm, 'warn');
@@ -184,6 +186,8 @@ const InteractiveTerminal = ({ isOpen, onClose, data, language, setLanguage, isD
         print(t.notFound(name), 'err');
     }
 
+    // Every command generates some "traffic" in the background network
+    if (cmd) window.dispatchEvent(new CustomEvent('network:burst', { detail: { type: 'packets' } }));
     setLines((prev) => [...prev, { type: 'cmd', content: cmd }, ...out]);
   };
 

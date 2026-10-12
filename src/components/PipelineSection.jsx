@@ -62,6 +62,8 @@ const PipelineSection = ({ language }) => {
       let step = 0;
       interval = setInterval(() => {
         setActiveStage(step);
+        // Deploy reached "Live": send a wave through the background network
+        if (step === totalSteps - 1) window.dispatchEvent(new CustomEvent('network:burst', { detail: { type: 'wave' } }));
         step++;
         if (step >= totalSteps) clearInterval(interval);
       }, 550);
