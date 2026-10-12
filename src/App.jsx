@@ -13,6 +13,11 @@ import TerminalText from './components/TerminalText';
 import ContactForm from './components/ContactForm';
 import ProjectModal from './components/ProjectModal';
 import CertificationModal from './components/CertificationModal';
+import CertificationCard from './components/CertificationCard';
+import NetworkBackground from './components/NetworkBackground';
+import PipelineSection from './components/PipelineSection';
+import InteractiveTerminal from './components/InteractiveTerminal';
+import SectionRail from './components/SectionRail';
 import TerminalSkills from './components/TerminalSkills';
 import SectionHeader from './components/SectionHeader';
 import CvDropdown from './components/CvDropdown';
@@ -20,7 +25,7 @@ import CvDropdown from './components/CvDropdown';
 function App() {
   useScrollReveal();
   const [language, setLanguage] = useState('es');
-  const { personalInfo, projects, skills, certification, nav, hero, sections } = portfolioData[language];
+  const { personalInfo, projects, skills, certifications, nav, hero, sections } = portfolioData[language];
   const [isScrolled, setIsScrolled] = useState(false);
   const [isDarkMode, setIsDarkMode] = useState(() => {
     if (typeof window !== 'undefined') {
@@ -31,12 +36,14 @@ function App() {
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const [selectedProject, setSelectedProject] = useState(null);
   const [isProjectModalOpen, setIsProjectModalOpen] = useState(false);
+  const [selectedCert, setSelectedCert] = useState(null);
   const [isCertModalOpen, setIsCertModalOpen] = useState(false);
-  const [currentCertImgIndex, setCurrentCertImgIndex] = useState(0);
+  const [isTerminalOpen, setIsTerminalOpen] = useState(false);
   const [showBackToTop, setShowBackToTop] = useState(false);
   const [cvDropdownContext, setCvDropdownContext] = useState(null); // 'hero' | 'mobile' | null
 
   const lenisRef = useRef(null);
+  const heroRef = useRef(null);
 
   // Smooth Scroll Initialization (Lenis)
   useEffect(() => {
@@ -65,14 +72,27 @@ function App() {
 
   // Pause/Resume Lenis when modals are open/closed
   useEffect(() => {
-    if (isProjectModalOpen || isCertModalOpen) {
+    if (isProjectModalOpen || isCertModalOpen || isTerminalOpen) {
       lenisRef.current?.stop();
       document.body.classList.add('lenis-stopped');
     } else {
       lenisRef.current?.start();
       document.body.classList.remove('lenis-stopped');
     }
-  }, [isProjectModalOpen, isCertModalOpen]);
+  }, [isProjectModalOpen, isCertModalOpen, isTerminalOpen]);
+
+  // Open the interactive terminal with ` or Ctrl+K
+  useEffect(() => {
+    const handleKey = (e) => {
+      const typing = ['INPUT', 'TEXTAREA'].includes(document.activeElement?.tagName);
+      if ((e.key === '`' && !typing) || ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k')) {
+        e.preventDefault();
+        setIsTerminalOpen((open) => !open);
+      }
+    };
+    window.addEventListener('keydown', handleKey);
+    return () => window.removeEventListener('keydown', handleKey);
+  }, []);
 
   const scrollTo = (target) => {
     lenisRef.current?.scrollTo(target, {
@@ -123,7 +143,15 @@ function App() {
       if (progressElement) {
         progressElement.style.width = scrolled + "%";
       }
+
+      // Hero parallax: content drifts up slower and fades out
+      const hero = heroRef.current;
+      if (hero && !reducedMotion && winScroll < 1200) {
+        hero.style.translate = `0 ${winScroll * 0.35}px`;
+        hero.style.opacity = Math.max(0, 1 - winScroll / 600);
+      }
     };
+    const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
 
     window.addEventListener("scroll", handleScroll);
     return () => window.removeEventListener("scroll", handleScroll);
@@ -133,12 +161,23 @@ function App() {
     <div className="min-h-screen bg-stone-50 text-warm-gray font-sans selection:bg-green-800 selection:text-[#f7f5f0] relative z-0">
       {/* Decorative Background Elements */}
       <div className="bg-grid"></div>
-      <div className="glow-orb glow-orb-1"></div>
-      <div className="glow-orb glow-orb-2"></div>
+      <NetworkBackground />
 
       <Preloader />
       <CustomCursor />
       <div id="scroll-progress"></div>
+      <SectionRail
+        scrollTo={scrollTo}
+        items={[
+          { id: 'top', label: language === 'es' ? 'inicio' : 'home' },
+          { id: 'proyectos', label: nav.projects },
+          { id: 'skills', label: nav.skills },
+          { id: 'certificaciones', label: sections.certificationsTitle },
+          { id: 'pipeline', label: 'pipeline' },
+          { id: 'sobre-mi', label: nav.about },
+          { id: 'contacto', label: nav.contact },
+        ]}
+      />
       {/* Navigation */}
       <nav className={`fixed top-0 w-full z-50 transition-all duration-300 ${isScrolled || isMobileMenuOpen ? 'bg-stone-50/80 backdrop-blur-md border-b border-stone-200/50 py-2' : 'bg-transparent py-4'}`}>
         <div className="max-w-[900px] mx-auto px-6 flex items-center justify-between relative z-50">
@@ -150,6 +189,15 @@ function App() {
             <a href="#skills" onClick={(e) => { e.preventDefault(); scrollTo('#skills'); }} className="px-3 py-2 rounded-full hover:bg-stone-200/50 hover:text-green-800 transition-colors"><GlitchText text={nav.skills} /></a>
             <a href="#sobre-mi" onClick={(e) => { e.preventDefault(); scrollTo('#sobre-mi'); }} className="px-3 py-2 rounded-full hover:bg-stone-200/50 hover:text-green-800 transition-colors"><GlitchText text={nav.about} /></a>
             <a href="#contacto" onClick={(e) => { e.preventDefault(); scrollTo('#contacto'); }} className="px-3 py-2 rounded-full hover:bg-stone-200/50 hover:text-green-800 transition-colors"><GlitchText text={nav.contact} /></a>
+
+            <button
+              onClick={() => setIsTerminalOpen(true)}
+              className="px-2.5 py-1.5 rounded-lg border border-stone-200/60 dark:border-green-500/30 font-mono text-xs text-dark dark:text-green-400 hover:border-green-500 hover:text-green-800 dark:hover:bg-green-500/10 transition-colors normal-case tracking-normal"
+              aria-label="Open terminal"
+              title="Terminal ( ` / Ctrl+K )"
+            >
+              &gt;_
+            </button>
 
             <button 
               onClick={() => setLanguage(lang => lang === 'es' ? 'en' : 'es')} 
@@ -174,7 +222,14 @@ function App() {
           </div>
 
           {/* Mobile Menu Controls */}
-          <div className="flex sm:hidden items-center gap-3">
+          <div className="flex sm:hidden items-center gap-1.5">
+            <button
+              onClick={() => setIsTerminalOpen(true)}
+              className="px-2 py-1 rounded-lg border border-stone-200/60 dark:border-green-500/30 font-mono text-xs text-dark dark:text-green-400"
+              aria-label="Open terminal"
+            >
+              &gt;_
+            </button>
             <button 
               onClick={() => setLanguage(lang => lang === 'es' ? 'en' : 'es')} 
               className="p-2 rounded-full hover:bg-stone-200/50 dark:hover:bg-stone-800/50 text-dark dark:text-stone-300 transition-colors group relative"
@@ -196,7 +251,7 @@ function App() {
             </button>
             <button 
               onClick={() => setIsMobileMenuOpen(!isMobileMenuOpen)} 
-              className="flex items-center gap-2 px-3 py-1.5 rounded-lg border border-stone-200/50 dark:border-stone-800/50 bg-stone-100/30 dark:bg-[#141410]/30 hover:bg-stone-200/50 dark:hover:border-green-500/50 text-dark dark:text-stone-300 hover:text-green-800 dark:hover:text-green-500 transition-all font-mono text-xs uppercase tracking-widest backdrop-blur-sm relative overflow-hidden group"
+              className="flex items-center gap-2 px-3 py-1.5 whitespace-nowrap rounded-lg border border-stone-200/50 dark:border-stone-800/50 bg-stone-100/30 dark:bg-[#141410]/30 hover:bg-stone-200/50 dark:hover:border-green-500/50 text-dark dark:text-stone-300 hover:text-green-800 dark:hover:text-green-500 transition-all font-mono text-xs uppercase tracking-widest backdrop-blur-sm relative overflow-hidden group"
               aria-label="Toggle Mobile Menu"
             >
               {isMobileMenuOpen ? (
@@ -311,7 +366,7 @@ function App() {
       </nav>
 
       {/* Hero Section */}
-      <section className="relative z-10 pt-24 sm:pt-40 pb-20 px-6 max-w-[900px] mx-auto min-h-[80vh] flex flex-col justify-center reveal">
+      <section ref={heroRef} className="relative z-10 pt-24 sm:pt-40 pb-20 px-6 max-w-[900px] mx-auto min-h-[80vh] flex flex-col justify-center reveal">
         {/* Avatar */}
         <div className="flex items-center gap-4 mb-6">
           <div className="relative">
@@ -330,12 +385,12 @@ function App() {
               { type: 'output', text: `[OK] ${personalInfo.role} ${hero.loaded}`, postDelay: 1000 }
             ]} 
           />
-          <a href="#contacto" className="flex items-center gap-2 px-3 py-1 bg-green-50 border border-green-200 rounded-full hover:bg-green-100 transition-colors group">
+          <a href="#contacto" className="flex items-center gap-2 px-3 py-1 bg-green-50 dark:bg-green-500/10 border border-green-200 dark:border-green-500/30 rounded-full hover:bg-green-100 dark:hover:bg-green-500/20 transition-colors group">
             <span className="relative flex h-2 w-2">
               <span className="animate-ping absolute inline-flex h-full w-full rounded-full bg-green-400 opacity-75"></span>
               <span className="relative inline-flex rounded-full h-2 w-2 bg-green-500"></span>
             </span>
-            <span className="text-[10px] uppercase tracking-wider text-green-800 font-semibold">{hero.availability}</span>
+            <span className="text-[10px] uppercase tracking-wider text-green-800 dark:text-green-400 font-semibold">{hero.availability}</span>
           </a>
         </div>
         <h1 className="text-4xl sm:text-5xl md:text-7xl font-serif text-dark leading-tight mb-8 max-w-2xl">
@@ -368,6 +423,17 @@ function App() {
             </div>
           </div>
         </div>
+        <button
+          onClick={() => setIsTerminalOpen(true)}
+          className="mt-10 w-fit font-mono text-xs text-stone-400 hover:text-green-700 dark:hover:text-green-400 transition-colors"
+        >
+          <span className="text-green-600 dark:text-green-500">$</span> {language === 'es' ? 'Tip: presioná' : 'Tip: press'}{' '}
+          <kbd className="px-1.5 py-0.5 rounded border border-stone-300 dark:border-stone-700">`</kbd>{' '}
+          {language === 'es' ? 'o' : 'or'}{' '}
+          <kbd className="px-1.5 py-0.5 rounded border border-stone-300 dark:border-stone-700">Ctrl+K</kbd>{' '}
+          {language === 'es' ? 'para abrir una terminal real' : 'to open a real terminal'}
+          <span className="inline-block w-2 h-3.5 ml-1 align-middle bg-green-500 animate-pulse"></span>
+        </button>
       </section>
 
       {/* Tech Marquee */}
@@ -378,16 +444,19 @@ function App() {
         <SectionHeader number="01" title={sections.projectsTitle} />
         <div className="flex flex-col gap-8">
           {projects.map((project, index) => (
-            <SpotlightCard
+            <div
               key={index}
+              className={`reveal ${index % 2 === 0 ? 'reveal-left' : 'reveal-right'}`}
+              style={{ transitionDelay: `${index * 80}ms` }}
+            >
+            <SpotlightCard
               as="div"
               onClick={() => {
                 setSelectedProject(project);
                 setIsProjectModalOpen(true);
               }}
-              className="reveal block group bg-white rounded-xl shadow-sm hover:shadow-md hover-lift transition-all duration-500 cursor-pointer"
+              className="block group bg-white rounded-xl shadow-sm hover:shadow-md hover-lift transition-all duration-500 cursor-pointer"
               innerClassName="p-8 flex flex-col sm:flex-row gap-6 items-start sm:items-center w-full h-full"
-              style={{ transitionDelay: `${index * 80}ms` }}
             >
               {/* Animated Left Border */}
               <div className="absolute left-0 top-0 bottom-0 w-1 bg-green-800 scale-y-0 group-hover:scale-y-100 transition-transform duration-500 origin-bottom"></div>
@@ -436,7 +505,7 @@ function App() {
                   <div className="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-all duration-500 ease-in-out">
                     <div className="overflow-hidden">
                       <div className="pt-4 mt-4 border-t border-stone-100">
-                        <span className="block text-[10px] sm:text-xs uppercase tracking-widest text-green-800 mb-1 font-medium">El Problema Resuelto</span>
+                        <span className="block text-[10px] sm:text-xs uppercase tracking-widest text-green-800 mb-1 font-medium">{sections.problemSolved}</span>
                         <p className="text-sm font-light text-warm-gray leading-relaxed">
                           {project.problemSolved}
                         </p>
@@ -446,6 +515,7 @@ function App() {
                 )}
               </div>
             </SpotlightCard>
+            </div>
           ))}
         </div>
       </section>
@@ -453,97 +523,37 @@ function App() {
       {/* Skills Section */}
       <section id="skills" className="py-12 sm:py-24 px-6 max-w-[900px] mx-auto">
         <SectionHeader number="02" title={sections.skillsTitle} />
-        <TerminalSkills skills={skills} language={language} />
+        <div className="reveal reveal-wipe">
+          <TerminalSkills skills={skills} language={language} />
+        </div>
       </section>
 
-      {/* Certification Section */}
-      <section className="py-12 sm:py-24 px-6 max-w-[900px] mx-auto">
-        <SectionHeader number="02.5" title={language === 'es' ? 'Certificación' : 'Certification'} />
-        <SpotlightCard
-          as="div"
-          onClick={() => setIsCertModalOpen(true)}
-          className="reveal block bg-white rounded-2xl shadow-sm hover:shadow-xl hover-lift transition-all duration-500 overflow-hidden cursor-pointer group"
-          innerClassName="w-full h-full"
-        >
-          <div className="flex flex-col md:flex-row">
-            {/* Badge Image */}
-            <div className="md:w-2/5 p-6 md:p-8 flex flex-col items-center justify-center bg-gradient-to-br from-stone-50 to-stone-100 dark:from-stone-900/50 dark:to-stone-800/30 border-b md:border-b-0 md:border-r border-stone-200/50 dark:border-stone-700/50 relative group/carousel">
-              <div className="relative w-full max-w-[280px] aspect-[4/3] flex items-center justify-center">
-                <div className="absolute -inset-4 bg-gradient-to-r from-green-500/20 via-emerald-500/20 to-teal-500/20 rounded-2xl blur-xl opacity-0 group-hover/carousel:opacity-100 transition-opacity duration-700 pointer-events-none"></div>
-                <img 
-                  src={certification.images ? certification.images[currentCertImgIndex] : certification.image} 
-                  alt={certification.title} 
-                  className="relative max-w-full max-h-full object-contain rounded-xl shadow-lg group-hover/carousel:shadow-2xl transition-all duration-500"
-                />
-                
-                {/* Arrow Controls */}
-                {certification.images && certification.images.length > 1 && (
-                  <>
-                    <button 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setCurrentCertImgIndex((prev) => (prev === 0 ? certification.images.length - 1 : prev - 1));
-                      }}
-                      className="absolute left-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full bg-white/90 dark:bg-black/70 backdrop-blur-sm text-dark dark:text-white border border-stone-200/50 dark:border-stone-800/50 shadow-md hover:bg-white dark:hover:bg-green-500/20 hover:text-green-800 dark:hover:text-green-500 transition-all opacity-0 group-hover/carousel:opacity-100 focus:opacity-100 z-10"
-                      aria-label="Previous image"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M15 19l-7-7 7-7" /></svg>
-                    </button>
-                    <button 
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setCurrentCertImgIndex((prev) => (prev === certification.images.length - 1 ? 0 : prev + 1));
-                      }}
-                      className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 flex items-center justify-center rounded-full bg-white/90 dark:bg-black/70 backdrop-blur-sm text-dark dark:text-white border border-stone-200/50 dark:border-stone-800/50 shadow-md hover:bg-white dark:hover:bg-green-500/20 hover:text-green-800 dark:hover:text-green-500 transition-all opacity-0 group-hover/carousel:opacity-100 focus:opacity-100 z-10"
-                      aria-label="Next image"
-                    >
-                      <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 5l7 7-7 7" /></svg>
-                    </button>
-                  </>
-                )}
-              </div>
-              
-              {/* Dots */}
-              {certification.images && certification.images.length > 1 && (
-                <div className="flex gap-1.5 mt-4 z-10">
-                  {certification.images.map((_, idx) => (
-                    <button
-                      key={idx}
-                      onClick={(e) => {
-                        e.stopPropagation();
-                        setCurrentCertImgIndex(idx);
-                      }}
-                      className={`w-1.5 h-1.5 rounded-full transition-all duration-300 ${currentCertImgIndex === idx ? 'w-4 bg-green-600 dark:bg-green-500' : 'bg-stone-300 dark:bg-stone-600 hover:bg-stone-400'}`}
-                      aria-label={`Go to slide ${idx + 1}`}
-                    />
-                  ))}
-                </div>
-              )}
+      {/* Certifications Section */}
+      <section id="certificaciones" className="py-12 sm:py-24 px-6 max-w-[900px] mx-auto">
+        <SectionHeader number="02.5" title={sections.certificationsTitle} />
+        <div className="grid md:grid-cols-2 gap-6">
+          {certifications.map((cert, index) => (
+            <div
+              key={cert.title}
+              className={`reveal reveal-scale ${cert.images ? 'md:col-span-2' : ''}`}
+              style={{ transitionDelay: `${index * 120}ms` }}
+            >
+              <CertificationCard
+                certification={cert}
+                sections={sections}
+                language={language}
+                onOpen={() => {
+                  setSelectedCert(cert);
+                  setIsCertModalOpen(true);
+                }}
+              />
             </div>
-            {/* Cert Info */}
-            <div className="md:w-3/5 p-6 md:p-8 flex flex-col justify-center">
-              <div className="inline-flex items-center gap-2 px-3 py-1.5 rounded-full bg-green-50 dark:bg-green-500/10 border border-green-200 dark:border-green-500/20 text-xs font-mono text-green-800 dark:text-green-500 mb-4 w-fit">
-                <svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12.75L11.25 15 15 9.75M21 12c0 1.268-.63 2.39-1.593 3.068a3.745 3.745 0 01-1.043 3.296 3.745 3.745 0 01-3.296 1.043A3.745 3.745 0 0112 21c-1.268 0-2.39-.63-3.068-1.593a3.746 3.746 0 01-3.296-1.043 3.745 3.745 0 01-1.043-3.296A3.745 3.745 0 013 12c0-1.268.63-2.39 1.593-3.068a3.745 3.745 0 011.043-3.296 3.746 3.746 0 013.296-1.043A3.746 3.746 0 0112 3c1.268 0 2.39.63 3.068 1.593a3.746 3.746 0 013.296 1.043 3.746 3.746 0 011.043 3.296A3.745 3.745 0 0121 12z" /></svg>
-                {language === 'es' ? 'Completado' : 'Completed'}
-              </div>
-              <h3 className="text-2xl md:text-3xl font-serif text-dark mb-2">{certification.title}</h3>
-              <p className="text-sm font-mono text-warm-gray mb-1">{certification.issuer}</p>
-              <p className="text-xs font-mono text-stone-400 mb-4">{certification.date}</p>
-              <p className="font-light leading-relaxed text-warm-gray mb-6">{certification.description}</p>
-              <a 
-                href={certification.verifyUrl} 
-                target="_blank" 
-                rel="noreferrer"
-                className="group inline-flex items-center gap-2 px-5 py-2.5 bg-green-50 dark:bg-green-500/10 border border-green-200 dark:border-green-500/30 rounded-full text-sm font-medium text-green-800 dark:text-green-500 hover:bg-green-100 dark:hover:bg-green-500/20 transition-colors w-fit"
-              >
-                <svg className="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
-                {language === 'es' ? 'Verificar en Credly' : 'Verify on Credly'}
-                <svg className="w-3.5 h-3.5 group-hover:translate-x-1 transition-transform" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M13.5 4.5L21 12m0 0l-7.5 7.5M21 12H3" /></svg>
-              </a>
-            </div>
-          </div>
-        </SpotlightCard>
+          ))}
+        </div>
       </section>
+
+      {/* CI/CD Pipeline Section */}
+      <PipelineSection language={language} />
 
       {/* Sobre Mí Section */}
       <section id="sobre-mi" className="py-12 sm:py-24 px-6 max-w-[900px] mx-auto reveal">
@@ -563,7 +573,7 @@ function App() {
             <div className="relative border border-green-200/60 dark:border-green-500/20 rounded-xl p-4 bg-green-50/40 dark:bg-green-500/5">
               <div className="inline-flex items-center gap-2 px-2.5 py-1 rounded-full bg-green-100 dark:bg-green-500/15 border border-green-200 dark:border-green-500/30 text-[10px] font-mono text-green-700 dark:text-green-400 uppercase tracking-widest mb-3">
                 <svg className="w-3 h-3" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M9 12.75L11.25 15 15 9.75m-3-7.036A11.959 11.959 0 013.598 6 11.99 11.99 0 003 9.749c0 5.592 3.824 10.29 9 11.623 5.176-1.332 9-6.03 9-11.622 0-1.31-.21-2.571-.598-3.751h-.152c-3.196 0-6.1-1.248-8.25-3.285z" /></svg>
-                {language === 'es' ? 'Ciberseguridad ✓' : 'Cybersecurity ✓'}
+                {sections.aboutBadge}
               </div>
               <p className="font-light leading-relaxed text-sm">
                 {sections.aboutP3}
@@ -667,10 +677,22 @@ function App() {
 
       {/* Certification Modal */}
       <CertificationModal 
-        certification={certification} 
+        certification={selectedCert} 
         isOpen={isCertModalOpen} 
         onClose={() => setIsCertModalOpen(false)} 
         language={language}
+      />
+
+      {/* Interactive Terminal */}
+      <InteractiveTerminal
+        isOpen={isTerminalOpen}
+        onClose={() => setIsTerminalOpen(false)}
+        data={portfolioData[language]}
+        language={language}
+        setLanguage={setLanguage}
+        isDarkMode={isDarkMode}
+        toggleDarkMode={toggleDarkMode}
+        scrollTo={scrollTo}
       />
 
       {/* Back to top */}

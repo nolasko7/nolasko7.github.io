@@ -1,9 +1,9 @@
 import React from 'react';
 
 const technologies = [
-  "React", "Next.js", "Tailwind CSS", "Node.js", "Express", 
-  "PostgreSQL", "Flutter", "Docker", "Cloudflare", 
-  "Github Actions", "WhatsApp API", "Dart"
+  "Docker", "GitHub Actions", "Jenkins", "AWS", "Linux",
+  "CI/CD", "Cloudflare", "Git", "Node.js", "PostgreSQL",
+  "React", "Next.js"
 ];
 
 const TechMarquee = () => {

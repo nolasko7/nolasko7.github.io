@@ -30,9 +30,9 @@ export const portfolioData = {
   es: {
     personalInfo: {
       name: "Valentin",
-      role: "Software Developer · Web & Mobile · Ciberseguridad",
-      currentStatus: "2026 · Próximo Analista en Sistemas · Google Cybersecurity Certified",
-      description: "Software Developer de Villa Mercedes, Argentina. Tres proyectos en producción usados por clientes reales — desde bots de WhatsApp hasta apps móviles de gestión de stock.",
+      role: "DevOps & Cloud · Software Developer",
+      currentStatus: "2026 · Próximo Analista en Sistemas · Preparando AWS SAA-C03",
+      description: "DevOps & Cloud junior de Villa Mercedes, Argentina. Construyo, despliego y opero mis propios proyectos en producción — contenedores con Docker, pipelines de CI/CD con GitHub Actions y Cloudflare — usados por clientes reales.",
       email: "valentin.nolasco123123@gmail.com", 
       github: "https://github.com/nolasko7", 
       linkedin: "https://www.linkedin.com/in/valentin-nolasco-987249374/", 
@@ -61,10 +61,20 @@ export const portfolioData = {
         title: "Gestión de Turnos con Chatbot",
         video: peluqueriaVideo,
         images: [citaxImg0, citaxImg1, citaxImg2, citaxImg3, citaxImg4, citaxImg5],
-        type: "Web + Bot (IA) en producción",
-        description: "Desarrollé un sistema de turnos con bot de WhatsApp que está en producción y lo usa una peluquería real. Maneja reservas automáticamente sin intervención humana.",
-        problemSolved: "Optimiza exponencialmente el tiempo del peluquero al delegar la interacción en el bot, asegurando que los turnos estén siempre perfectamente organizados en la agenda de forma automática.",
-        tags: ["Next.js", "Node.js", "WhatsApp API", "PostgreSQL", "Docker", "Cloudflare", "Github Actions", "MySQL"],
+        type: "Web + Bot (IA) · Infra en producción",
+        description: "Sistema de turnos con bot de WhatsApp que usa una peluquería real. Me encargué de punta a punta: la app, los contenedores con Docker, el pipeline de CI/CD con GitHub Actions y Cloudflare.",
+        problemSolved: "El negocio recibe turnos 24/7 sin intervención humana, y cada cambio llega a producción automáticamente a través del pipeline, sin deploys manuales ni caídas del servicio.",
+        tags: ["Docker", "Github Actions", "Cloudflare", "CI/CD", "Node.js", "Next.js", "WhatsApp API", "PostgreSQL", "MySQL"],
+        link: "https://github.com/nolasko7",
+        github: "#"
+      },
+      {
+        title: "Este Portfolio · Pipeline CI/CD",
+        live: true,
+        type: "DevOps · Deploy automatizado",
+        description: "Cada push a main dispara un workflow de GitHub Actions que instala dependencias, compila el sitio con Vite inyectando las credenciales como secrets y lo publica en GitHub Pages, sin pasos manuales.",
+        problemSolved: "Deploys reproducibles y sin intervención: las claves nunca quedan en el repositorio y cualquier cambio queda online en minutos con trazabilidad completa en el historial del pipeline.",
+        tags: ["GitHub Actions", "CI/CD", "GitHub Pages", "Secrets Management", "Vite", "React"],
         link: "https://github.com/nolasko7",
         github: "#"
       },
@@ -92,25 +102,46 @@ export const portfolioData = {
       }
     ],
     skills: [
-      { name: "React / Next.js / Tailwind CSS", subtitle: "Frontend" },
+      { name: "AWS / EC2 / S3 / IAM / VPC / CloudFront / Route 53", subtitle: "Cloud (AWS)" },
+      { name: "GitHub Actions / Jenkins / Pipelines / Secrets / Deploy automático", subtitle: "CI/CD" },
+      { name: "Docker / Docker Compose / Cloudflare", subtitle: "Containers" },
       { name: "Node.js / Express / REST APIs / WebSockets", subtitle: "Backend APIs" },
+      { name: "React / Next.js / Tailwind CSS", subtitle: "Frontend" },
+      { name: "PostgreSQL / MySQL / SQL", subtitle: "Database" },
       { name: "Flutter / Dart / Android Studio", subtitle: "Mobile Development" },
-      { name: "PostgreSQL / SQL", subtitle: "Database" },
-      { name: "Docker / Cloudflare / Github Actions", subtitle: "Deployment" },
       { name: "WhatsApp API / LLM", subtitle: "Automation" },
-      { name: "Herramientas SIEM / Monitoreo de Sistemas / Análisis de Logs / Detección y Mitigación de Amenazas / Respuesta ante Incidentes / Evaluación de Vulnerabilidades / Gestión de Riesgos / Seguridad de la Información / IDS", subtitle: "Cybersecurity" },
-      { name: "Linux / SQL / Python para Automatización de Seguridad", subtitle: "Security Scripting" },
-      { name: "TCP/IP / Protocolos de Red / Análisis de Tráfico / Seguridad Perimetral", subtitle: "Networking" }
+      { name: "Linux / Redes TCP/IP / SIEM / Análisis de Logs / TryHackMe / Google Cybersecurity", subtitle: "Security (DevSecOps)" }
     ],
-    certification: {
-      title: "Google Cybersecurity Professional Certificate (v.2)",
-      issuer: "Coursera · Google",
-      date: "Agosto 2026",
-      image: googleCyberCertNew,
-      images: [googleCyberCertNew, googleCyberCert],
-      verifyUrl: "https://www.credly.com/go/rEaI6RrH",
-      description: "Certificado profesional de 8 cursos que cubre fundamentos de ciberseguridad, gestión de riesgos, seguridad de redes, herramientas SIEM, detección de amenazas, scripting con Python y Linux, y respuesta ante incidentes según el framework NIST."
-    },
+    certifications: [
+      {
+        title: "AWS Certified Solutions Architect – Associate (SAA-C03)",
+        issuer: "Amazon Web Services",
+        date: "En preparación",
+        status: "in_progress",
+        icon: "cloud",
+        description: "Diseño de arquitecturas en AWS resilientes, seguras, de alto rendimiento y costo-eficientes: EC2, S3, VPC, IAM, RDS, CloudFront, Route 53 y el Well-Architected Framework."
+      },
+      {
+        title: "TryHackMe SOC Level 1",
+        issuer: "TryHackMe",
+        date: "2026",
+        status: "discontinued",
+        progress: 50,
+        icon: "shield",
+        verifyUrl: "https://tryhackme.com/p/nolasko7",
+        description: "Avancé el 50% del path práctico de analista SOC (triage de alertas, análisis de logs, SIEM y respuesta ante incidentes) antes de reorientar mi carrera hacia DevOps / Cloud."
+      },
+      {
+        title: "Google Cybersecurity Professional Certificate (v.2)",
+        issuer: "Coursera · Google",
+        date: "Agosto 2026",
+        status: "completed",
+        image: googleCyberCertNew,
+        images: [googleCyberCertNew, googleCyberCert],
+        verifyUrl: "https://www.credly.com/go/rEaI6RrH",
+        description: "Certificado profesional de 8 cursos que cubre fundamentos de ciberseguridad, gestión de riesgos, seguridad de redes, herramientas SIEM, detección de amenazas, scripting con Python y Linux, y respuesta ante incidentes según el framework NIST."
+      }
+    ],
     nav: {
       projects: "Proyectos",
       skills: "Habilidades",
@@ -122,7 +153,7 @@ export const portfolioData = {
     },
     hero: {
       loaded: "",
-      availability: "Disponible para posiciones part-time, fulltime flexible y ciberseguridad junior",
+      availability: "Disponible para roles de DevOps / Cloud y desarrollo",
       titleHighlight: ["producto", "en", "producción"],
       title: "Del problema real al producto en producción.",
       talkButton: "Hablemos de tu proyecto"
@@ -134,8 +165,13 @@ export const portfolioData = {
       aboutTitle: "Sobre Mí",
       aboutP1: "Soy desarrollador de software de Villa Mercedes, Argentina. Estoy por recibirme de Analista en Sistemas y terminando mi carrera como Ingeniero en Sistemas. Me especializo en construir productos que resuelven problemas reales: sistemas de turnos, automatizaciones con WhatsApp y aplicaciones móviles que la gente usa todos los días.",
       aboutP2: "Algunos de mis proyectos están en producción y los usan clientes reales. Eso me enseñó más que cualquier curso — a tomar decisiones bajo presión, a priorizar lo que funciona y a iterar rápido cuando algo falla.",
-      aboutP3: "Completé el Certificado Profesional de Ciberseguridad de Google, donde profundicé en herramientas SIEM (Splunk, Chronicle), análisis de tráfico de red con Wireshark y tcpdump, detección de intrusiones con Suricata, gestión de riesgos y frameworks como NIST. La ciberseguridad es un área que me apasiona y hacia donde quiero orientar mi carrera.",
-      aboutAvailability: "Disponible para proyectos freelance, posiciones remotas y roles junior de ciberseguridad.",
+      aboutP3: "Hoy enfoco mi carrera en DevOps y Cloud: me estoy preparando para la certificación AWS Solutions Architect Associate y ya automatizo el build y deploy de mis proyectos con Docker y GitHub Actions. Mi base en ciberseguridad (Certificado de Google y labs de SOC en TryHackMe) me ayuda a pensar la infraestructura con seguridad desde el diseño: mínimo privilegio, monitoreo y análisis de logs.",
+      aboutBadge: "DevOps · Cloud",
+      certificationsTitle: "Certificaciones",
+      certCompleted: "Completado",
+      certInProgress: "En curso",
+      certDiscontinued: "Discontinuado",
+      aboutAvailability: "Disponible para posiciones remotas, proyectos freelance y roles de DevOps / Cloud.",
       expYears: "Años de Exp.",
       projectsCount: "Proyectos",
       contactTitle: "¿Listo para empezar?",
@@ -148,9 +184,9 @@ export const portfolioData = {
   en: {
     personalInfo: {
       name: "Valentin",
-      role: "Software Developer · Web & Mobile · Cybersecurity",
-      currentStatus: "2026 · Systems Analyst — graduating soon · Google Cybersecurity Certified",
-      description: "Software Developer from Villa Mercedes, Argentina. Three projects in production used by real clients — from WhatsApp bots to mobile inventory apps.",
+      role: "DevOps & Cloud · AWS · Software Developer",
+      currentStatus: "2026 · Systems Analyst — graduating soon · Preparing AWS SAA-C03",
+      description: "Junior DevOps & Cloud engineer from Villa Mercedes, Argentina. I build, deploy and run my own projects in production — Docker containers, CI/CD pipelines with GitHub Actions and Cloudflare — used by real clients.",
       email: "valentin.nolasco123123@gmail.com", 
       github: "https://github.com/nolasko7", 
       linkedin: "https://www.linkedin.com/in/valentin-nolasco-987249374/", 
@@ -179,10 +215,20 @@ export const portfolioData = {
         title: "Appointment Management with Chatbot",
         video: peluqueriaVideo,
         images: [citaxImg0, citaxImg1, citaxImg2, citaxImg3, citaxImg4, citaxImg5],
-        type: "Web + AI Bot in production",
-        description: "Developed an appointment system with a WhatsApp bot currently in production, used by a real hair salon. Handles reservations automatically without human intervention.",
-        problemSolved: "Exponentially optimizes the hairdresser's time by delegating interactions to the bot, ensuring appointments are perfectly and automatically organized in the agenda.",
-        tags: ["Next.js", "Node.js", "WhatsApp API", "PostgreSQL", "Docker", "Cloudflare", "Github Actions", "MySQL"],
+        type: "Web + AI Bot · Infra in production",
+        description: "Appointment system with a WhatsApp bot used by a real hair salon. I owned it end to end: the app, Docker containers, the CI/CD pipeline with GitHub Actions, and Cloudflare.",
+        problemSolved: "The business takes bookings 24/7 with no human intervention, and every change reaches production automatically through the pipeline — no manual deploys, no downtime.",
+        tags: ["Docker", "Github Actions", "Cloudflare", "CI/CD", "Node.js", "Next.js", "WhatsApp API", "PostgreSQL", "MySQL"],
+        link: "https://github.com/nolasko7",
+        github: "#"
+      },
+      {
+        title: "This Portfolio · CI/CD Pipeline",
+        live: true,
+        type: "DevOps · Automated deploy",
+        description: "Every push to main triggers a GitHub Actions workflow that installs dependencies, builds the site with Vite injecting credentials as secrets, and publishes it to GitHub Pages — no manual steps.",
+        problemSolved: "Reproducible, hands-off deploys: keys never live in the repository, and any change goes live in minutes with full traceability in the pipeline history.",
+        tags: ["GitHub Actions", "CI/CD", "GitHub Pages", "Secrets Management", "Vite", "React"],
         link: "https://github.com/nolasko7",
         github: "#"
       },
@@ -210,25 +256,46 @@ export const portfolioData = {
       }
     ],
     skills: [
-      { name: "React / Next.js / Tailwind CSS", subtitle: "Frontend" },
+      { name: "AWS / EC2 / S3 / IAM / VPC / CloudFront / Route 53", subtitle: "Cloud (AWS)" },
+      { name: "GitHub Actions / Jenkins / Pipelines / Secrets / Automated Deploy", subtitle: "CI/CD" },
+      { name: "Docker / Docker Compose / Cloudflare", subtitle: "Containers" },
       { name: "Node.js / Express / REST APIs / WebSockets", subtitle: "Backend APIs" },
+      { name: "React / Next.js / Tailwind CSS", subtitle: "Frontend" },
+      { name: "PostgreSQL / MySQL / SQL", subtitle: "Database" },
       { name: "Flutter / Dart / Android Studio", subtitle: "Mobile Development" },
-      { name: "PostgreSQL / SQL", subtitle: "Database" },
-      { name: "Docker / Cloudflare / Github Actions", subtitle: "Deployment" },
       { name: "WhatsApp API / LLM", subtitle: "Automation" },
-      { name: "SIEM Tools / System Monitoring / Log Analysis / Threat Detection & Mitigation / Incident Response / Vulnerability Assessment / Risk Management / Information Security / IDS", subtitle: "Cybersecurity" },
-      { name: "Linux / SQL / Python for Security Automation", subtitle: "Security Scripting" },
-      { name: "TCP/IP / Network Protocols / Traffic Analysis / Perimeter Security", subtitle: "Networking" }
+      { name: "Linux / TCP/IP Networking / SIEM / Log Analysis / TryHackMe / Google Cybersecurity", subtitle: "Security (DevSecOps)" }
     ],
-    certification: {
-      title: "Google Cybersecurity Professional Certificate (v.2)",
-      issuer: "Coursera · Google",
-      date: "August 2026",
-      image: googleCyberCertNew,
-      images: [googleCyberCertNew, googleCyberCert],
-      verifyUrl: "https://www.credly.com/go/rEaI6RrH",
-      description: "An 8-course professional certificate covering cybersecurity fundamentals, risk management, network security, SIEM tools, threat detection, Python and Linux scripting, and incident response following the NIST framework."
-    },
+    certifications: [
+      {
+        title: "AWS Certified Solutions Architect – Associate (SAA-C03)",
+        issuer: "Amazon Web Services",
+        date: "In preparation",
+        status: "in_progress",
+        icon: "cloud",
+        description: "Designing resilient, secure, high-performing and cost-optimized architectures on AWS: EC2, S3, VPC, IAM, RDS, CloudFront, Route 53 and the Well-Architected Framework."
+      },
+      {
+        title: "TryHackMe SOC Level 1",
+        issuer: "TryHackMe",
+        date: "2026",
+        status: "discontinued",
+        progress: 50,
+        icon: "shield",
+        verifyUrl: "https://tryhackme.com/p/nolasko7",
+        description: "Completed 50% of the hands-on SOC analyst path (alert triage, log analysis, SIEM and incident response) before refocusing my career on DevOps / Cloud."
+      },
+      {
+        title: "Google Cybersecurity Professional Certificate (v.2)",
+        issuer: "Coursera · Google",
+        date: "August 2026",
+        status: "completed",
+        image: googleCyberCertNew,
+        images: [googleCyberCertNew, googleCyberCert],
+        verifyUrl: "https://www.credly.com/go/rEaI6RrH",
+        description: "An 8-course professional certificate covering cybersecurity fundamentals, risk management, network security, SIEM tools, threat detection, Python and Linux scripting, and incident response following the NIST framework."
+      }
+    ],
     nav: {
       projects: "Projects",
       skills: "Skills",
@@ -240,7 +307,7 @@ export const portfolioData = {
     },
     hero: {
       loaded: "loaded.",
-      availability: "Available for part-time, flexible full-time & junior cybersecurity positions",
+      availability: "Available for junior DevOps / Cloud & development roles",
       titleHighlight: ["product", "in", "production"],
       title: "From real problem to product in production.",
       talkButton: "Let's talk about your project"
@@ -252,8 +319,13 @@ export const portfolioData = {
       aboutTitle: "About Me",
       aboutP1: "I am a Software Developer from Villa Mercedes, Argentina. I am about to graduate as a Systems Analyst and finishing my degree as a Systems Engineer. I specialize in building products that solve real problems: appointment systems, WhatsApp automations, and mobile applications that people use every day.",
       aboutP2: "Some of my projects are in production and used by real clients. That taught me more than any course — how to make decisions under pressure, prioritize what works, and iterate fast when something fails.",
-      aboutP3: "I completed Google's Professional Cybersecurity Certificate, gaining hands-on experience with SIEM tools (Splunk, Chronicle), network traffic analysis using Wireshark and tcpdump, intrusion detection with Suricata, risk management, and frameworks like NIST. Cybersecurity is an area I'm deeply passionate about and where I want to steer my career.",
-      aboutAvailability: "Available for freelance projects, remote positions, and junior cybersecurity roles.",
+      aboutP3: "Today my career is focused on DevOps and Cloud: I'm preparing for the AWS Solutions Architect Associate certification and I already automate the build and deploy of my projects with Docker and GitHub Actions. My cybersecurity background (Google's Certificate and SOC labs on TryHackMe) helps me design infrastructure with security in mind: least privilege, monitoring and log analysis.",
+      aboutBadge: "DevOps · Cloud",
+      certificationsTitle: "Certifications",
+      certCompleted: "Completed",
+      certInProgress: "In progress",
+      certDiscontinued: "Discontinued",
+      aboutAvailability: "Available for remote positions, freelance projects, and junior DevOps / Cloud roles.",
       expYears: "Years Exp.",
       projectsCount: "Projects",
       contactTitle: "Ready to start?",
