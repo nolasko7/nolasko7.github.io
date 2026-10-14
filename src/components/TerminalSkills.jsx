@@ -440,18 +440,19 @@ tools.forEach(tool => {
             {skillFiles[activeSkill.subtitle]?.file || 'skills.js'}
             <button className="ml-2 w-4 h-4 rounded hover:bg-[#333333] flex items-center justify-center text-stone-400 hover:text-[#ffffff] transition-colors">×</button>
           </div>
-          <button onClick={handleCopy} className="mr-4 text-[#858585] hover:text-[#ffffff] transition-colors flex items-center gap-1.5 text-[11px] uppercase tracking-wider">
+          <button onClick={handleCopy} aria-label="Copy" className="mr-3 md:mr-4 flex-shrink-0 text-[#858585] hover:text-[#ffffff] transition-colors flex items-center gap-1.5 text-[11px] uppercase tracking-wider">
             {copied ? (
-              <><svg className="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg> <span className="text-green-500">Copied</span></>
+              <><svg className="w-3.5 h-3.5 text-green-500" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7"/></svg> <span className="hidden sm:inline text-green-500">Copied</span></>
             ) : (
-              <><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg> Copy</>
+              <><svg className="w-3.5 h-3.5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M8 16H6a2 2 0 01-2-2V6a2 2 0 012-2h8a2 2 0 012 2v2m-6 12h8a2 2 0 002-2v-8a2 2 0 00-2-2h-8a2 2 0 00-2 2v8a2 2 0 002 2z"/></svg> <span className="hidden sm:inline">Copy</span></>
             )}
           </button>
         </div>
 
         {/* Editor Body */}
         <div 
-          className="p-4 md:p-6 overflow-y-auto flex-1 font-mono text-[11px] md:text-[13px] leading-relaxed whitespace-pre font-light cursor-text" 
+          className="p-4 md:p-6 overflow-y-auto flex-1 max-h-[380px] md:max-h-none font-mono text-[11px] md:text-[13px] leading-relaxed whitespace-pre-wrap md:whitespace-pre font-light cursor-text" 
+          data-lenis-prevent
           onClick={() => {
             if (isTyping) {
               setDisplayedText(getCodeSnippet(activeSkill.subtitle, activeSkill.name));
@@ -463,7 +464,7 @@ tools.forEach(tool => {
           {displayedText.split('\n').map((line, idx) => (
             <div key={idx} className="flex">
               <span className="text-[#858585] select-none text-right pr-4 min-w-[2rem] md:min-w-[2.5rem] border-r border-[#404040] mr-4">{idx + 1}</span>
-              <span className="text-[#d4d4d4] break-all md:break-normal">
+              <span className="text-[#d4d4d4] min-w-0 break-words md:break-normal">
                 {line}
                 {isTyping && idx === displayedText.split('\n').length - 1 && (
                   <span className="inline-block w-2 h-4 bg-[#d4d4d4] animate-pulse align-middle ml-1"></span>
