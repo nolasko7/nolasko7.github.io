@@ -1,4 +1,4 @@
-import { useEffect, useState, useRef } from 'react';
+import { useEffect, useState, useRef, lazy, Suspense } from 'react';
 import Lenis from 'lenis';
 import { useScrollReveal } from './hooks/useScrollReveal';
 import { portfolioData } from './config/data';
@@ -18,6 +18,13 @@ import NetworkBackground from './components/NetworkBackground';
 import PipelineSection from './components/PipelineSection';
 import InteractiveTerminal from './components/InteractiveTerminal';
 import SectionRail from './components/SectionRail';
+import ScrollStack, { ScrollStackItem } from './components/reactbits/ScrollStack';
+import { FaLinkedin } from 'react-icons/fa';
+import { FiMail } from 'react-icons/fi';
+import { SiGithub, SiWhatsapp } from 'react-icons/si';
+// Heavy below-the-fold components are loaded on demand to keep the initial bundle small
+const FaultyTerminal = lazy(() => import('./components/reactbits/FaultyTerminal'));
+const Dock = lazy(() => import('./components/reactbits/Dock'));
 import TerminalSkills from './components/TerminalSkills';
 import SectionHeader from './components/SectionHeader';
 import CvDropdown from './components/CvDropdown';
@@ -148,7 +155,7 @@ function App() {
       const hero = heroRef.current;
       if (hero && !reducedMotion && winScroll < 1200) {
         hero.style.translate = `0 ${winScroll * 0.35}px`;
-        hero.style.opacity = Math.max(0, 1 - winScroll / 600);
+        hero.style.opacity = Math.max(0, 1 - winScroll / 450);
       }
     };
     const reducedMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
@@ -442,82 +449,84 @@ function App() {
       {/* Proyectos Section */}
       <section id="proyectos" className="py-12 sm:py-24 px-6 max-w-[900px] mx-auto">
         <SectionHeader number="01" title={sections.projectsTitle} />
-        <div className="flex flex-col gap-8">
+        <ScrollStack
+          useWindowScroll
+          smoothScroll={false}
+          stackPosition={110}
+          itemDistance={60}
+          itemStackDistance={22}
+          itemScale={0.04}
+          baseScale={0.85}
+          dimAmount={0.3}
+          holdDistance={120}
+        >
           {projects.map((project, index) => (
-            <div
-              key={index}
-              className={`reveal ${index % 2 === 0 ? 'reveal-left' : 'reveal-right'}`}
-              style={{ transitionDelay: `${index * 80}ms` }}
-            >
-            <SpotlightCard
-              as="div"
-              onClick={() => {
-                setSelectedProject(project);
-                setIsProjectModalOpen(true);
-              }}
-              className="block group bg-white rounded-xl shadow-sm hover:shadow-md hover-lift transition-all duration-500 cursor-pointer"
-              innerClassName="p-8 flex flex-col sm:flex-row gap-6 items-start sm:items-center w-full h-full"
-            >
-              {/* Animated Left Border */}
-              <div className="absolute left-0 top-0 bottom-0 w-1 bg-green-800 scale-y-0 group-hover:scale-y-100 transition-transform duration-500 origin-bottom"></div>
-
-              {project.video ? (
-                <div className="w-full h-56 sm:w-64 sm:h-40 group-hover:sm:w-80 group-hover:sm:h-48 flex-shrink-0 rounded-lg overflow-hidden bg-stone-200/50 flex justify-center items-center relative shadow-sm group-hover:shadow-md transition-all duration-500 ease-out">
-                  <video
-                    src={project.video}
-                    autoPlay
-                    loop
-                    muted
-                    playsInline
-                    className={`w-full h-full group-hover:scale-105 transition-transform duration-700 ${project.videoClass || 'object-cover'}`}
-                  />
-                </div>
-              ) : project.images && project.images.length > 0 ? (
-                <div className="w-full h-56 sm:w-64 sm:h-40 group-hover:sm:w-80 group-hover:sm:h-48 flex-shrink-0 rounded-lg overflow-hidden bg-stone-200/50 flex justify-center items-center relative shadow-sm group-hover:shadow-md transition-all duration-500 ease-out">
-                  <img
-                    src={project.images[0]}
-                    alt={project.title}
-                    className="w-full h-full group-hover:scale-105 transition-transform duration-700 object-cover"
-                  />
-                </div>
-              ) : (
-                <div className="w-12 h-12 rounded-full bg-stone-50 flex items-center justify-center flex-shrink-0 text-green-800">
-                  <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" strokeWidth="1.5">
-                    <path strokeLinecap="round" strokeLinejoin="round" d="M14.25 9.75L16.5 12l-2.25 2.25m-4.5 0L7.5 12l2.25-2.25M6 20.25h12A2.25 2.25 0 0020.25 18V6A2.25 2.25 0 0018 3.75H6A2.25 2.25 0 003.75 6v12A2.25 2.25 0 006 20.25z" />
-                  </svg>
-                </div>
-              )}
-
-              <div className="flex-grow">
-                <span className="text-xs uppercase tracking-widest text-warm-gray mb-2 block">{project.type}</span>
-                <h3 className="text-2xl font-serif text-[#141410] dark:text-[#f7f5f0] mb-2 group-hover:text-green-800 transition-colors">{project.title}</h3>
-                <p className="font-light mb-4">{project.description}</p>
-                <div className="flex flex-wrap gap-2">
-                  {project.tags.map(tag => (
-                    <span key={tag} className="px-3 py-1 bg-stone-50 text-xs rounded-full text-warm-gray border border-stone-200">
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-
-                {/* Solución / Impacto animado en hover */}
-                {project.problemSolved && (
-                  <div className="grid grid-rows-[0fr] group-hover:grid-rows-[1fr] transition-all duration-500 ease-in-out">
-                    <div className="overflow-hidden">
-                      <div className="pt-4 mt-4 border-t border-stone-100">
-                        <span className="block text-[10px] sm:text-xs uppercase tracking-widest text-green-800 mb-1 font-medium">{sections.problemSolved}</span>
-                        <p className="text-sm font-light text-warm-gray leading-relaxed">
-                          {project.problemSolved}
-                        </p>
-                      </div>
+            <ScrollStackItem key={project.title} itemClassName="p-5 sm:p-8 border border-stone-200/60 dark:border-stone-800/70">
+              <div
+                role="button"
+                tabIndex={0}
+                onClick={() => {
+                  setSelectedProject(project);
+                  setIsProjectModalOpen(true);
+                }}
+                onKeyDown={(e) => {
+                  if (e.key === 'Enter') {
+                    setSelectedProject(project);
+                    setIsProjectModalOpen(true);
+                  }
+                }}
+                className="group flex flex-col md:flex-row gap-5 md:gap-8 md:items-center cursor-pointer"
+              >
+                {/* Media */}
+                <div className="w-full md:w-[46%] aspect-video flex-shrink-0 rounded-2xl overflow-hidden bg-stone-200/50 dark:bg-stone-800/50 flex justify-center items-center relative">
+                  {project.video ? (
+                    <video
+                      src={project.video}
+                      autoPlay
+                      loop
+                      muted
+                      playsInline
+                      className={`w-full h-full group-hover:scale-105 transition-transform duration-700 ${project.videoClass || 'object-cover'}`}
+                    />
+                  ) : project.images && project.images.length > 0 ? (
+                    <img
+                      src={project.images[0]}
+                      alt={project.title}
+                      className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-700"
+                    />
+                  ) : (
+                    <div className="w-full h-full flex items-center justify-center bg-gradient-to-br from-green-500/10 to-transparent font-mono text-green-600 dark:text-green-400">
+                      <span className="text-4xl">&gt;_</span>
                     </div>
+                  )}
+                  <span className="absolute top-3 left-3 px-2 py-1 rounded-md bg-black/60 backdrop-blur-sm font-mono text-[10px] text-green-400">
+                    {String(index + 1).padStart(2, '0')} / {String(projects.length).padStart(2, '0')}
+                  </span>
+                </div>
+
+                {/* Info */}
+                <div className="flex-grow min-w-0">
+                  <span className="text-[11px] font-mono uppercase tracking-widest text-green-700 dark:text-green-500 mb-2 block">{project.type}</span>
+                  <h3 className="text-2xl sm:text-3xl font-serif text-[#141410] dark:text-[#f7f5f0] mb-3 group-hover:text-green-700 dark:group-hover:text-green-400 transition-colors">{project.title}</h3>
+                  <p className="font-light text-sm sm:text-base mb-4 line-clamp-3 md:line-clamp-none">{project.description}</p>
+                  {project.problemSolved && (
+                    <div className="hidden md:block mb-4 pl-3 border-l-2 border-green-500/60">
+                      <span className="block text-[10px] uppercase tracking-widest text-green-700 dark:text-green-500 mb-1 font-medium">{sections.problemSolved}</span>
+                      <p className="text-sm font-light text-warm-gray leading-relaxed">{project.problemSolved}</p>
+                    </div>
+                  )}
+                  <div className="flex flex-wrap gap-2">
+                    {project.tags.slice(0, 6).map(tag => (
+                      <span key={tag} className="px-2.5 py-1 bg-stone-50 text-[11px] font-mono rounded-full text-warm-gray border border-stone-200 dark:border-stone-800">
+                        {tag}
+                      </span>
+                    ))}
                   </div>
-                )}
+                </div>
               </div>
-            </SpotlightCard>
-            </div>
+            </ScrollStackItem>
           ))}
-        </div>
+        </ScrollStack>
       </section>
 
       {/* Skills Section */}
@@ -601,8 +610,27 @@ function App() {
       </section>
 
       {/* Contacto & Footer */}
-      <section id="contacto" className="bg-[#141410] text-stone-300 pb-8 pt-16 sm:pt-32 px-6">
-        <div className="max-w-[900px] mx-auto">
+      <section id="contacto" className="relative overflow-hidden bg-[#141410] text-stone-300 pb-8 pt-16 sm:pt-32 px-6">
+        {/* CRT terminal background (paused automatically when off-screen) */}
+        <div className="absolute inset-0 pointer-events-auto" aria-hidden="true">
+          <Suspense fallback={null}>
+          <FaultyTerminal
+            tint="#22c55e"
+            glyphs="characters"
+            scale={1.4}
+            timeScale={0.35}
+            brightness={0.55}
+            glitchAmount={0.6}
+            flickerAmount={0.5}
+            curvature={0.12}
+            mouseStrength={0.3}
+            vignette={0.4}
+            pageLoadAnimation={false}
+          />
+          </Suspense>
+        </div>
+        <div className="absolute inset-0 pointer-events-none bg-gradient-to-b from-[#141410] via-[#141410]/75 to-[#141410]/90" aria-hidden="true"></div>
+        <div className="relative z-10 max-w-[900px] mx-auto">
           <div className="mb-24 reveal grid md:grid-cols-2 gap-12 md:gap-16 items-start">
             {/* Left: Form */}
             <div>
@@ -621,12 +649,41 @@ function App() {
               <ContactForm language={language} />
             </div>
 
-            {/* Right: Direct links */}
-            <div>
-              <span className="text-[10px] font-mono uppercase tracking-widest text-stone-500 mb-6 block">
-                {language === 'es' ? 'O contactame directo' : 'Or reach me directly'}
-              </span>
-              <div className="grid grid-cols-2 gap-4">
+            {/* Right: Direct links, as a terminal-style card */}
+            <div className="md:self-center">
+              <div className="rounded-2xl border border-stone-800 bg-[#0c0c0a]/80 backdrop-blur-md shadow-[0_0_40px_rgba(34,197,94,0.08)] overflow-hidden">
+                <div className="flex items-center gap-2 px-4 py-3 border-b border-stone-800 bg-[#141410]/80">
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#ff5f56]"></span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#ffbd2e]"></span>
+                  <span className="w-2.5 h-2.5 rounded-full bg-[#27c93f]"></span>
+                  <span className="ml-2 font-mono text-[11px] text-stone-500">contact.sh</span>
+                </div>
+                <div className="p-6">
+                  <span className="text-[10px] font-mono uppercase tracking-widest text-green-500/70 block">
+                    $ {language === 'es' ? 'contactame directo' : 'reach me directly'}
+                  </span>
+              {/* Desktop: macOS-style dock */}
+              <div className="hidden md:block relative h-28">
+                <Suspense fallback={null}>
+                <Dock
+                  theme="dark"
+                  accentColor="#22c55e"
+                  baseItemSize={52}
+                  magnification={78}
+                  panelHeight={68}
+                  showIndicators={false}
+                  showBadges={false}
+                  items={[
+                    { label: 'Email', icon: <FiMail className="text-[#f7f5f0]" />, onClick: () => { window.location.href = `mailto:${personalInfo.email}`; } },
+                    { label: 'WhatsApp', icon: <SiWhatsapp className="text-[#25D366]" />, onClick: () => window.open(personalInfo.whatsapp, '_blank', 'noopener') },
+                    { label: 'GitHub', icon: <SiGithub className="text-[#f7f5f0]" />, onClick: () => window.open(personalInfo.github, '_blank', 'noopener') },
+                    { label: 'LinkedIn', icon: <FaLinkedin className="text-[#0A66C2]" />, onClick: () => window.open(personalInfo.linkedin, '_blank', 'noopener') },
+                  ]}
+                />
+                </Suspense>
+              </div>
+              {/* Mobile: no hover, so keep the simple grid */}
+              <div className="grid grid-cols-2 gap-4 md:hidden">
                 <a href={`mailto:${personalInfo.email}`} className="group flex flex-col justify-center items-center gap-3 border border-stone-800 bg-stone-900/50 hover:border-green-500 p-6 rounded-2xl transition-colors">
                   <svg className="w-6 h-6 text-stone-400 group-hover:text-green-500 transition-colors" fill="none" stroke="currentColor" viewBox="0 0 24 24">
                     <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="1.5" d="M21.75 6.75v10.5a2.25 2.25 0 01-2.25 2.25h-15a2.25 2.25 0 01-2.25-2.25V6.75m19.5 0A2.25 2.25 0 0019.5 4.5h-15a2.25 2.25 0 00-2.25 2.25m19.5 0v.243a2.25 2.25 0 01-1.07 1.916l-7.5 4.615a2.25 2.25 0 01-2.36 0L3.32 8.91a2.25 2.25 0 01-1.07-1.916V6.75" />
@@ -654,6 +711,22 @@ function App() {
                   </svg>
                   <span className="font-medium text-sm text-[#f7f5f0]">LinkedIn</span>
                 </a>
+              </div>
+                  <div className="mt-6 md:mt-2 pt-5 border-t border-stone-800 space-y-2 font-mono text-xs">
+                    <a href={`mailto:${personalInfo.email}`} className="flex gap-3 text-stone-400 hover:text-green-400 transition-colors">
+                      <span className="text-green-500/70 w-16 flex-shrink-0">email</span>
+                      <span className="truncate">{personalInfo.email}</span>
+                    </a>
+                    <div className="flex gap-3 text-stone-400">
+                      <span className="text-green-500/70 w-16 flex-shrink-0">{language === 'es' ? 'ubicación' : 'location'}</span>
+                      <span>Villa Mercedes, AR · UTC-3</span>
+                    </div>
+                    <div className="flex gap-3 text-stone-400">
+                      <span className="text-green-500/70 w-16 flex-shrink-0">status</span>
+                      <span className="flex items-center gap-2"><span className="w-1.5 h-1.5 rounded-full bg-green-500 animate-pulse"></span>{language === 'es' ? 'disponible' : 'available'}</span>
+                    </div>
+                  </div>
+                </div>
               </div>
             </div>
           </div>

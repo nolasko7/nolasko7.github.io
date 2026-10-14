@@ -5,7 +5,8 @@ import reactRefresh from 'eslint-plugin-react-refresh'
 import { defineConfig, globalIgnores } from 'eslint/config'
 
 export default defineConfig([
-  globalIgnores(['dist']),
+  // src/components/reactbits: third-party components copied from reactbits.dev
+  globalIgnores(['dist', 'src/components/reactbits']),
   {
     files: ['**/*.{js,jsx}'],
     extends: [
